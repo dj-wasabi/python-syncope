@@ -53,11 +53,12 @@ class PyTest(TestCommand):
         errno = pytest.main(self.test_args)
         sys.exit(errno)
 
-setup(name='syncope',
+setup(name='python-syncope',
       version=info.get('__version__', '0.0.0'),
       description='Managing Syncope via rest API',
       keywords='syncope',
       url='http://github.com/dj-wasabi/python-syncope',
+      download_url='http://github.com/dj-wasabi/python-syncope',
       author=info.get('__author__', ''),
       author_email=info.get('__email__', 'me@home.nl'),
       license=info.get('__license__', '0.0.0'),
@@ -72,4 +73,10 @@ setup(name='syncope',
       extras_require={
         'testing': ['pytest'],
       },
-      zip_safe=False,)
+      zip_safe=False,
+      classifiers=[
+        'Development Status :: 3 - Alpha',
+        'Operating System :: Unix',
+        'Programming Language :: Python :: 2.7',
+      ],
+      )

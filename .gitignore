@@ -1,3 +1,5 @@
 .idea
 .cache
+dist
+python_syncope.egg-info
 
