@@ -9,7 +9,6 @@ Work in progress
 5. [Some Examples](#small-example)
 6. [Documentation](#documentation)
 7. [License](#license)
-8. [Author Information](#author-information)
 
 #Overview
 
@@ -47,11 +46,8 @@ Output:
 
 #Documentation
 
-Will be available soon on readthedocs.org
+Documentation can be found at [readthedocs](http://python-syncope.readthedocs.org/)
 
 #License
 
 python-syncope is licensed under the Apache License 2.0. Check the LICENSE file.
-
-#Author Information
-

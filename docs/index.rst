@@ -10,20 +10,33 @@ Contents:
 
 .. toctree::
    :maxdepth: 2
+       Overview
 
 
-Overview of python-syncope
-==========================
+Overview
+========
 
-This is an python  wrapper for the Syncope REST API. You'll be able to get, create and update User, roles and a lot more via the API.
+This is an python wrapper for the Syncope REST API. You'll be able to get, create and update User, roles and a lot more via the API.
 
 
-Installation of python-syncope
-==============================
+Installation
+============
 
 Installation can be done with:
+
+.. code-block:: bash
+
     pip install python-syncope
 
+
+API doc
+=======
+
+
+.. automodule:: syncope
+
+.. autoclass:: Syncope
+    :members:
 
 
 Indices and tables

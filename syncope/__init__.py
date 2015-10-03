@@ -60,7 +60,6 @@ class Syncope(object):
         :return: Returns the data in json (if any) from the DELETE request.
         """
         syncope_path = "{0}/{1}".format(self.syncope_url, rest_path)
-        print syncope_path
 
         return requests.delete(syncope_path, auth=(self.username, self.password), headers=self.headers, timeout=self.timeout)
 
@@ -95,6 +94,12 @@ class Syncope(object):
 
         :param id: The id of the user to get information.
         :return: False when something went wrong, or json data with all information from this specific user.
+        :Example:
+
+        >>> import syncope
+        >>> syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
+        >>> print syn.get_users_id(5)
+        {u'status': u'active', u'username': u'puccini', <cut>}
         """
         data = self._get(self.rest_users + "/" + str(id))
 
@@ -108,6 +113,12 @@ class Syncope(object):
 
         :param username: The username of the user to get information.
         :return: False when something went wrong, or json data with all information from this specific user.
+        :Example:
+
+        >>> import syncope
+        >>> syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
+        >>> print syn.get_users_name("puccini")
+        {u'status': u'active', u'username': u'puccini', <cut>}
         """
         data = self._get(self.rest_users, "?username=" + str(username))
 
@@ -117,9 +128,15 @@ class Syncope(object):
             return False
 
     def get_users_count(self):
-        """Will count all users found in Syncope.
+        """Will count all users found in Syncope and return an number.
 
         :return: False when something went wrong, or the amount of users.
+        :Example:
+
+        >>> import syncope
+        >>> syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
+        >>> print syn.get_users_count()
+        5
         """
         data = self._get(self.rest_users + "/count")
 
