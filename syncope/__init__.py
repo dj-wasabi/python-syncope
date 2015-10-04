@@ -93,7 +93,7 @@ class Syncope(object):
         else:
             return False
 
-    def get_users_id(self, id):
+    def get_users_id(self, id=None):
         """Will get all data from specific user, specified via id.
 
         :param id: The id of the user to get information.
@@ -105,6 +105,9 @@ class Syncope(object):
         >>> print syn.get_users_id(5)
         {u'status': u'active', u'username': u'puccini', <cut>}
         """
+        if id is None:
+            raise ValueError('This search needs an id to work!')
+
         data = self._get(self.rest_users + "/" + str(id))
 
         if data.status_code == 200:
@@ -219,7 +222,7 @@ class Syncope(object):
         else:
             return False
 
-    def get_users_name(self, username):
+    def get_users_username(self, username=None):
         """Will get all data from specific user, specified via username.
 
         :param username: The username of the user to get information.
@@ -228,9 +231,11 @@ class Syncope(object):
 
         >>> import syncope
         >>> syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
-        >>> print syn.get_users_name("puccini")
+        >>> print syn.get_users_username("puccini")
         {u'status': u'active', u'username': u'puccini', <cut>}
         """
+        if username is None:
+            raise ValueError('This search needs an username to work!')
         data = self._get(self.rest_users, "?username=" + str(username))
 
         if data.status_code == 200:
@@ -256,84 +261,105 @@ class Syncope(object):
         else:
             return False
 
-    def edit_users_id_activate(self, id):
+    def edit_users_id_activate(self, id=None):
         """Will activate an user.
 
         :param id: The id of the user to activate.
         :return: False when something went wrong, or json data with all information from this specific user.
         """
+        if id is None:
+            raise ValueError('This search needs an id to work!')
+
         data = self._post(self.rest_users + "/" + str(id) + "/status/activate", '{}')
         if data.status_code == 200:
             return data.json()
         else:
             return False
 
-    def edit_users_username_activate(self, username):
+    def edit_users_username_activate(self, username=None):
         """Will activate an user.
 
         :param username: The username of the user to activate.
         :return: False when something went wrong, or json data with all information from this specific user.
         """
+        if username is None:
+            raise ValueError('This search needs an username to work!')
+
         data = self._post(self.rest_users + "/activateByUsername/" + username, '{}')
         if data.status_code == 200:
             return data.json()
         else:
             return False
 
-    def edit_users_id_reactivate(self, id):
+    def edit_users_id_reactivate(self, id=None):
         """Will reactivate an user.
 
         :param id: The id of the user to reactivate.
         :return: False when something went wrong, or json data with all information from this specific user.
         """
+        if id is None:
+            raise ValueError('This search needs an id to work!')
+
         data = self._post(self.rest_users + "/" + str(id) + "/status/reactivate", '{}')
         if data.status_code == 200:
             return data.json()
         else:
             return False
 
-    def edit_users_username_reactivate(self, username):
+    def edit_users_username_reactivate(self, username=None):
         """Will reactivate an user.
 
         :param username: The username of the user to reactivate.
         :return: False when something went wrong, or json data with all information from this specific user.
         """
+        if username is None:
+            raise ValueError('This search needs an username to work!')
+
         data = self._post(self.rest_users + "/reactivateByUsername/" + username, '{}')
         if data.status_code == 200:
             return data.json()
         else:
             return False
 
-    def edit_users_id_suspend(self, id):
+    def edit_users_id_suspend(self, id=None):
         """Will suspend an user.
 
         :param id: The id of the user to suspend.
         :return: False when something went wrong, or json data with all information from this specific user.
         """
+        if id is None:
+            raise ValueError('This search needs an id to work!')
+
         data = self._post(self.rest_users + "/" + str(id) + "/status/suspend", '{}')
         if data.status_code == 200:
             return data.json()
         else:
             return False
 
-    def edit_users_username_suspend(self, username):
+    def edit_users_username_suspend(self, username=None):
         """Will suspend an user.
 
         :param username: The username of the user to suspend.
         :return: False when something went wrong, or json data with all information from this specific user.
         """
+        if username is None:
+            raise ValueError('This search needs an username to work!')
+
         data = self._post(self.rest_users + "/suspendByUsername/" + username, '{}')
         if data.status_code == 200:
             return data.json()
         else:
             return False
 
-    def delete_users_id(self, id):
+    def delete_users_id(self, id=None):
         """Will delete an user.
 
         :param id: The id of the user to delete.
         :return: True when user is deleted, False when user don't exists or something failed.
         """
+        if id is None:
+            raise ValueError('This search needs an id to work!')
+
         data = self._delete(self.rest_users + "/" + str(id))
 
         if data.status_code == 200:
