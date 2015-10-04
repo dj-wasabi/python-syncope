@@ -112,10 +112,10 @@ class Syncope(object):
         else:
             return False
 
-    def get_users_search(self, arguments):
+    def get_users_search(self, arguments=None):
         """Will search an user. It will require an python dict to be used for the searching.
 
-        :param arguments: An python dict. See example for more information. This will be transformed into an JSON structure.
+        :param arguments: An python dict. See example for more information. This 'argument' will be transformed into an JSON structure.
         :return: False when something went wrong, or json data with all information from the search request.
         :Example:
 
@@ -136,6 +136,9 @@ class Syncope(object):
         >>> print syn.get_users_search(search_user)
         {u'status': u'active', u'username': u'vivaldi', <cut>}
         """
+        if arguments is None:
+            raise ValueError('This search needs an dict to work!')
+
         arguments = json.dumps(arguments)
         data = self._post(self.rest_users +"/search", arguments)
 
@@ -144,10 +147,10 @@ class Syncope(object):
         else:
             return False
 
-    def get_users_search_count(self, arguments):
-        """Will count the users matching the search request
+    def get_users_search_count(self, arguments=None):
+        """Will count the users matching the search request.
 
-        :param arguments: An python dict. See example for more information. This will be transformed into an JSON structure.
+        :param arguments: An python dict. See example for more information. This 'argument' will be transformed into an JSON structure.
         :return: False when something went wrong, or the amount of users matching the request.
         :Example:
 
@@ -157,8 +160,8 @@ class Syncope(object):
         >>> search_user['type'] = "LEAF"
         >>> search_user['attributableCond'] = {}
         >>> search_user['attributableCond']['type'] = 'EQ'
-        >>> search_user['attributableCond']['schema'] = 'username'
-        >>> search_user['attributableCond']['expression'] = 'vivaldi'
+        >>> search_user['attributableCond']['schema'] = 'status'
+        >>> search_user['attributableCond']['expression'] = 'active'
         >>> print syn.get_users_search_count(search_user)
         5
         >>> search_user = {}
@@ -168,8 +171,48 @@ class Syncope(object):
         >>> print syn.get_users_search_count(search_user)
         1
         """
+        if arguments is None:
+            raise ValueError('This search needs an dict to work!')
+
         arguments = json.dumps(arguments)
         data = self._post(self.rest_users +"/search/count", arguments)
+
+        if data.status_code == 200:
+            return data.json()
+        else:
+            return False
+
+    def get_users_search_page(self, arguments=None, page=None, size=None):
+        """Will search an user and will return the data by pages.
+
+        :param arguments: An python dict. See example for more information. This 'argument' will be transformed into an JSON structure.
+        :param page: The page it should return.
+        :param size: The amount of results per page.
+        :return: False when something went wrong, or json data with all information from the search request.
+        :Example:
+
+        >>> import syncope
+        >>> syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
+        >>> search_user = {}
+        >>> search_user['type'] = "LEAF"
+        >>> search_user['attributableCond'] = {}
+        >>> search_user['attributableCond']['type'] = 'EQ'
+        >>> search_user['attributableCond']['schema'] = 'status'
+        >>> search_user['attributableCond']['expression'] = 'active'
+        >>> print syn.get_users_search_page(search_user, 1, 1)
+        {u'status': u'active', u'username': u'rossini', <cut>}
+        >>> print syn.get_users_search_page(search_user, 3, 1)
+        {u'status': u'active', u'username': u'vivaldi', <cut>}
+        """
+        if arguments is None:
+            raise ValueError('This search needs an dict to work!')
+        if page is None:
+            raise ValueError('This search needs an page to work!')
+        if size is None:
+            raise ValueError('This search needs an size to work!')
+
+        arguments = json.dumps(arguments)
+        data = self._post(self.rest_users +"/search", arguments, "?page=" + str(page) + "&size=" + str(size))
 
         if data.status_code == 200:
             return data.json()
