@@ -72,7 +72,7 @@ class Syncope(object):
         :return: Returns the data in json (if any)from the POST request.
         """
         if arguments is None:
-            raise ValueError('No arguments given to search for.')
+            raise ValueError('No arguments are given to POST.')
         if params is not None:
             syncope_path = "{0}/{1}.json{2}".format(self.syncope_url, rest_path, params)
         else:
@@ -179,7 +179,7 @@ class Syncope(object):
         :param id: The id of the user to activate.
         :return: False when something went wrong, or json data with all information from this specific user.
         """
-        data = self._post(self.rest_users + "/" + str(id) + "/status/activate")
+        data = self._post(self.rest_users + "/" + str(id) + "/status/activate", '{}')
         if data.status_code == 200:
             return data.json()
         else:
@@ -191,7 +191,7 @@ class Syncope(object):
         :param username: The username of the user to activate.
         :return: False when something went wrong, or json data with all information from this specific user.
         """
-        data = self._post(self.rest_users + "/activateByUsername/" + username)
+        data = self._post(self.rest_users + "/activateByUsername/" + username, '{}')
         if data.status_code == 200:
             return data.json()
         else:
@@ -203,7 +203,7 @@ class Syncope(object):
         :param id: The id of the user to reactivate.
         :return: False when something went wrong, or json data with all information from this specific user.
         """
-        data = self._post(self.rest_users + "/" + str(id) + "/status/reactivate")
+        data = self._post(self.rest_users + "/" + str(id) + "/status/reactivate", '{}')
         if data.status_code == 200:
             return data.json()
         else:
@@ -215,7 +215,7 @@ class Syncope(object):
         :param username: The username of the user to reactivate.
         :return: False when something went wrong, or json data with all information from this specific user.
         """
-        data = self._post(self.rest_users + "/reactivateByUsername/" + username)
+        data = self._post(self.rest_users + "/reactivateByUsername/" + username, '{}')
         if data.status_code == 200:
             return data.json()
         else:
@@ -227,7 +227,7 @@ class Syncope(object):
         :param id: The id of the user to suspend.
         :return: False when something went wrong, or json data with all information from this specific user.
         """
-        data = self._post(self.rest_users + "/" + str(id) + "/status/suspend")
+        data = self._post(self.rest_users + "/" + str(id) + "/status/suspend", '{}')
         if data.status_code == 200:
             return data.json()
         else:
@@ -239,7 +239,7 @@ class Syncope(object):
         :param username: The username of the user to suspend.
         :return: False when something went wrong, or json data with all information from this specific user.
         """
-        data = self._post(self.rest_users + "/suspendByUsername/" + username)
+        data = self._post(self.rest_users + "/suspendByUsername/" + username, '{}')
         if data.status_code == 200:
             return data.json()
         else:
