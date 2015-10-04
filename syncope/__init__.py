@@ -7,6 +7,7 @@ __license__ = "Apache License 2.0"
 __email__ = "ikben@werner-dijkerman.nl"
 
 import requests
+import json
 
 
 class Syncope(object):
@@ -112,10 +113,10 @@ class Syncope(object):
             return False
 
     def get_users_search(self, arguments):
-        """Will search an user. It will require an JSON structure to be used for the searching.
+        """Will search an user. It will require an python dict to be used for the searching.
 
-        :param arguments: An JSON structure. See example for more information.
-        :return: False when something went wrong, or json data with all information from this specific user.
+        :param arguments: An python dict. See example for more information. This will be transformed into an JSON structure.
+        :return: False when something went wrong, or json data with all information from the search request.
         :Example:
 
         >>> import syncope
@@ -126,9 +127,15 @@ class Syncope(object):
         >>> search_user['attributableCond']['type'] = 'EQ'
         >>> search_user['attributableCond']['schema'] = 'username'
         >>> search_user['attributableCond']['expression'] = 'vivaldi'
-        >>> print syn.get_users_search(json.dumps(search_user))
+        >>> print syn.get_users_search(search_user)
+        {u'status': u'active', u'username': u'vivaldi', <cut>}
+        >>> search_user = {}
+        >>> search_user['type'] = "LEAF"
+        >>> search_user['resourceCond'] = {}
+        >>> search_user['resourceCond']['resourceName'] = 'ws-target-resource-1'
         {u'status': u'active', u'username': u'vivaldi', <cut>}
         """
+        arguments = json.dumps(arguments)
         data = self._post(self.rest_users +"/search", arguments)
 
         if data.status_code == 200:
