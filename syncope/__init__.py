@@ -133,10 +133,43 @@ class Syncope(object):
         >>> search_user['type'] = "LEAF"
         >>> search_user['resourceCond'] = {}
         >>> search_user['resourceCond']['resourceName'] = 'ws-target-resource-1'
+        >>> print syn.get_users_search(search_user)
         {u'status': u'active', u'username': u'vivaldi', <cut>}
         """
         arguments = json.dumps(arguments)
         data = self._post(self.rest_users +"/search", arguments)
+
+        if data.status_code == 200:
+            return data.json()
+        else:
+            return False
+
+    def get_users_search_count(self, arguments):
+        """Will count the users matching the search request
+
+        :param arguments: An python dict. See example for more information. This will be transformed into an JSON structure.
+        :return: False when something went wrong, or the amount of users matching the request.
+        :Example:
+
+        >>> import syncope
+        >>> syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
+        >>> search_user = {}
+        >>> search_user['type'] = "LEAF"
+        >>> search_user['attributableCond'] = {}
+        >>> search_user['attributableCond']['type'] = 'EQ'
+        >>> search_user['attributableCond']['schema'] = 'username'
+        >>> search_user['attributableCond']['expression'] = 'vivaldi'
+        >>> print syn.get_users_search_count(search_user)
+        5
+        >>> search_user = {}
+        >>> search_user['type'] = "LEAF"
+        >>> search_user['resourceCond'] = {}
+        >>> search_user['resourceCond']['resourceName'] = 'ws-target-resource-1'
+        >>> print syn.get_users_search_count(search_user)
+        1
+        """
+        arguments = json.dumps(arguments)
+        data = self._post(self.rest_users +"/search/count", arguments)
 
         if data.status_code == 200:
             return data.json()
