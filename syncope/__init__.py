@@ -2,7 +2,7 @@
 
 
 __author__ = 'Werner Dijkerman'
-__version__ = '0.0.1'
+__version__ = '0.0.2'
 __license__ = "Apache License 2.0"
 __email__ = "ikben@werner-dijkerman.nl"
 
@@ -59,19 +59,22 @@ class Syncope(object):
         :param arguments: Optional arguments.
         :return: Returns the data in json (if any) from the DELETE request.
         """
-        syncope_path = "{0}/{1}".format(self.syncope_url, rest_path)
+        syncope_path = "{0}/{1}.json".format(self.syncope_url, rest_path)
 
-        return requests.delete(syncope_path, auth=(self.username, self.password), headers=self.headers, timeout=self.timeout)
+        return requests.delete(syncope_path, auth=(self.username, self.password), headers=self.headers, data=arguments, timeout=self.timeout)
 
-    def _post(self, rest_path, arguments=None):
+    def _post(self, rest_path, arguments=None, params=None):
         """Will do an POST action for creating or to update the information from the syncope server. This function will be called from the actual actions.
 
         :param rest_path: uri of the rest action.
-        :param arguments: Optional arguments.
+        :param arguments: Optional arguments in JSON format.
+        :param params: Optional parameters to the uri, like: ?username=something.
         :return: Returns the data in json (if any)from the POST request.
         """
-        if arguments is not None:
-            syncope_path = "{0}/{1}.json{2}".format(self.syncope_url, rest_path, arguments)
+        if arguments is None:
+            raise ValueError('No arguments given to search for.')
+        if params is not None:
+            syncope_path = "{0}/{1}.json{2}".format(self.syncope_url, rest_path, params)
         else:
             syncope_path = "{0}/{1}.json".format(self.syncope_url, rest_path)
 
@@ -102,6 +105,31 @@ class Syncope(object):
         {u'status': u'active', u'username': u'puccini', <cut>}
         """
         data = self._get(self.rest_users + "/" + str(id))
+
+        if data.status_code == 200:
+            return data.json()
+        else:
+            return False
+
+    def get_users_search(self, arguments):
+        """Will search an user. It will require an JSON structure to be used for the searching.
+
+        :param arguments: An JSON structure. See example for more information.
+        :return: False when something went wrong, or json data with all information from this specific user.
+        :Example:
+
+        >>> import syncope
+        >>> syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
+        >>>search_user = {}
+        >>>search_user['type'] = "LEAF"
+        >>>search_user['attributableCond'] = {}
+        >>>search_user['attributableCond']['type'] = 'EQ'
+        >>>search_user['attributableCond']['schema'] = 'username'
+        >>>search_user['attributableCond']['expression'] = 'vivaldi'
+        >>>print syn.get_users_search(json.dumps(search_user))
+        {u'status': u'active', u'username': u'vivaldi', <cut>}
+        """
+        data = self._post(self.rest_users +"/search", arguments)
 
         if data.status_code == 200:
             return data.json()
