@@ -120,13 +120,13 @@ class Syncope(object):
 
         >>> import syncope
         >>> syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
-        >>>search_user = {}
-        >>>search_user['type'] = "LEAF"
-        >>>search_user['attributableCond'] = {}
-        >>>search_user['attributableCond']['type'] = 'EQ'
-        >>>search_user['attributableCond']['schema'] = 'username'
-        >>>search_user['attributableCond']['expression'] = 'vivaldi'
-        >>>print syn.get_users_search(json.dumps(search_user))
+        >>> search_user = {}
+        >>> search_user['type'] = "LEAF"
+        >>> search_user['attributableCond'] = {}
+        >>> search_user['attributableCond']['type'] = 'EQ'
+        >>> search_user['attributableCond']['schema'] = 'username'
+        >>> search_user['attributableCond']['expression'] = 'vivaldi'
+        >>> print syn.get_users_search(json.dumps(search_user))
         {u'status': u'active', u'username': u'vivaldi', <cut>}
         """
         data = self._post(self.rest_users +"/search", arguments)
