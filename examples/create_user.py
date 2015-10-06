@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 #
 # This example will create an user: wedijkerman and will print the username and the creation date.
+# Example user will have 2 roles assigned: 'child' (RoleID: 2) and 'otherchild' (RoleID: 8)
+# Example user will also have 2 resources: 'ws-target-resource-1' and 'ws-target-resource-2'
 #
 import syncope
 
