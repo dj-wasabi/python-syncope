@@ -81,6 +81,27 @@ class Syncope(object):
 
         return requests.post(syncope_path, auth=(self.username, self.password), headers=self.headers, data=arguments, timeout=self.timeout)
 
+    def create_users(self, arguments):
+        """Will create an user.
+
+        :param arguments: An JSON structure for creating the user. An example can be found in the 'examples' folder.
+        :return: False when something went wrong, or json data with all information from the just created user.
+        :Example:
+
+        >>> import syncope
+        >>> syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
+        >>> create_user = '{"attributes": [{"schema": "aLong","values": [],"readonly": false},{"schema": "activationDate","values": [""],"readonly": false},{"schema": "cool","values": ["false"],"readonly": false},{"schema": "email","values": ["werner@dj-wasabi.nl"],"readonly": false},{"schema": "firstname","values": ["Werner"],"readonly": false},{"schema": "fullname","values": ["Werner Dijkerman"],"readonly": false},{"schema": "gender","values": ["M"],"readonly": false},{"schema": "loginDate","values": [""],"readonly": false},{"schema": "makeItDouble","values": [],"readonly": false},{"schema": "surname","values": ["Dijkerman"],"readonly": false},{"schema": "type","values": ["account"],"readonly": false},{"schema": "uselessReadonly","values": [""],"readonly": true},{"schema": "userId","values": ["werner@dj-wasabi.nl"],"readonly": false}],"id": 0,"derivedAttributes": [{"schema": "cn","values": [],"readonly": false}],"virtualAttributes": [],"password": "password1234","status": null,"token": null,"tokenExpireTime": null,"username": "wedijkerman","lastLoginDate": null,"creationDate": null,"changePwdDate": null,"failedLogins": null}'
+        >>> print syn.create_users(create_user)
+        {u'status': u'active', u'username': u'wedijkerman', u'creationDate': 1444152747171, <cut>}
+        """
+
+        data = self._post(self.rest_users, arguments)
+
+        if data.status_code == 201:
+            return data.json()
+        else:
+            return False
+
     def get_users(self):
         """Get information from all users in JSON.
 
@@ -118,31 +139,22 @@ class Syncope(object):
     def get_users_search(self, arguments=None):
         """Will search an user. It will require an python dict to be used for the searching.
 
-        :param arguments: An python dict. See example for more information. This 'argument' will be transformed into an JSON structure.
+        :param arguments: An JSON structure. See example for more information.
         :return: False when something went wrong, or json data with all information from the search request.
         :Example:
 
         >>> import syncope
         >>> syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
-        >>> search_user = {}
-        >>> search_user['type'] = "LEAF"
-        >>> search_user['attributableCond'] = {}
-        >>> search_user['attributableCond']['type'] = 'EQ'
-        >>> search_user['attributableCond']['schema'] = 'username'
-        >>> search_user['attributableCond']['expression'] = 'vivaldi'
-        >>> print syn.get_users_search(search_user)
+        >>> search_req = '{"type":"LEAF","attributableCond":{"type":"EQ","schema":"username","expression":"vivaldi"}}'
+        >>> print syn.get_users_search(search_req)
         {u'status': u'active', u'username': u'vivaldi', <cut>}
-        >>> search_user = {}
-        >>> search_user['type'] = "LEAF"
-        >>> search_user['resourceCond'] = {}
-        >>> search_user['resourceCond']['resourceName'] = 'ws-target-resource-1'
-        >>> print syn.get_users_search(search_user)
+        >>> search_req = '{"type":"LEAF","resourceCond":{"resourceName":"ws-target-resource-1"}}'
+        >>> print syn.get_users_search(search_req)
         {u'status': u'active', u'username': u'vivaldi', <cut>}
         """
         if arguments is None:
             raise ValueError('This search needs an dict to work!')
 
-        arguments = json.dumps(arguments)
         data = self._post(self.rest_users +"/search", arguments)
 
         if data.status_code == 200:
@@ -153,31 +165,22 @@ class Syncope(object):
     def get_users_search_count(self, arguments=None):
         """Will count the users matching the search request.
 
-        :param arguments: An python dict. See example for more information. This 'argument' will be transformed into an JSON structure.
+        :param arguments: An JSON structure. See example for more information.
         :return: False when something went wrong, or the amount of users matching the request.
         :Example:
 
         >>> import syncope
         >>> syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
-        >>> search_user = {}
-        >>> search_user['type'] = "LEAF"
-        >>> search_user['attributableCond'] = {}
-        >>> search_user['attributableCond']['type'] = 'EQ'
-        >>> search_user['attributableCond']['schema'] = 'status'
-        >>> search_user['attributableCond']['expression'] = 'active'
-        >>> print syn.get_users_search_count(search_user)
+        >>> search_req = '{"type":"LEAF","attributableCond":{"type":"EQ","schema":"username","expression":"vivaldi"}}'
+        >>> print syn.get_users_search_count(search_req)
         5
-        >>> search_user = {}
-        >>> search_user['type'] = "LEAF"
-        >>> search_user['resourceCond'] = {}
-        >>> search_user['resourceCond']['resourceName'] = 'ws-target-resource-1'
-        >>> print syn.get_users_search_count(search_user)
+        >>> search_req = '{"type":"LEAF","resourceCond":{"resourceName":"ws-target-resource-1"}}'
+        >>> print syn.get_users_search_count(search_req)
         1
         """
         if arguments is None:
             raise ValueError('This search needs an dict to work!')
 
-        arguments = json.dumps(arguments)
         data = self._post(self.rest_users +"/search/count", arguments)
 
         if data.status_code == 200:
@@ -188,7 +191,7 @@ class Syncope(object):
     def get_users_search_page(self, arguments=None, page=None, size=None):
         """Will search an user and will return the data by pages.
 
-        :param arguments: An python dict. See example for more information. This 'argument' will be transformed into an JSON structure.
+        :param arguments: An JSON structure. See example for more information.
         :param page: The page it should return.
         :param size: The amount of results per page.
         :return: False when something went wrong, or json data with all information from the search request.
@@ -196,12 +199,7 @@ class Syncope(object):
 
         >>> import syncope
         >>> syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
-        >>> search_user = {}
-        >>> search_user['type'] = "LEAF"
-        >>> search_user['attributableCond'] = {}
-        >>> search_user['attributableCond']['type'] = 'EQ'
-        >>> search_user['attributableCond']['schema'] = 'status'
-        >>> search_user['attributableCond']['expression'] = 'active'
+        >>> search_req = '{"type":"LEAF","attributableCond":{"type":"EQ","schema":"status","expression":"active"}}'
         >>> print syn.get_users_search_page(search_user, 1, 1)
         {u'status': u'active', u'username': u'rossini', <cut>}
         >>> print syn.get_users_search_page(search_user, 3, 1)
@@ -214,7 +212,6 @@ class Syncope(object):
         if size is None:
             raise ValueError('This search needs an size to work!')
 
-        arguments = json.dumps(arguments)
         data = self._post(self.rest_users +"/search", arguments, "?page=" + str(page) + "&size=" + str(size))
 
         if data.status_code == 200:
