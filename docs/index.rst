@@ -6,6 +6,8 @@
 Welcome to python-syncope's documentation!
 ==========================================
 
+|build-status| |docs|
+
 Contents:
 
 .. toctree::
