@@ -1,4 +1,4 @@
-Changelog for python-syncope
+#Changelog for python-syncope
 
 Below an overview of all changes in the releases.
 
