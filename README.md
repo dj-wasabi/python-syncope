@@ -1,6 +1,8 @@
 Work in progress
 =========
 
+[![Documentation Status](https://readthedocs.org/projects/python-syncope/badge/?version=latest)](http://python-syncope.readthedocs.org/en/latest/?badge=latest)
+
 ####Table of Contents
 1. [Overview](#overview)
 2. [Requirements](#requirements)
