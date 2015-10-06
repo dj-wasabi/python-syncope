@@ -6,7 +6,9 @@
 Welcome to python-syncope's documentation!
 ==========================================
 
-|build-status| |docs|
+.. image:: https://readthedocs.org/projects/python-syncope/badge/?version=latest
+:target: http://python-syncope.readthedocs.org/en/latest/?badge=latest
+:alt: Documentation Status
 
 Contents:
 
