@@ -85,6 +85,7 @@ class Syncope(object):
         """Will create an user.
 
         :param arguments: An JSON structure for creating the user. An example can be found in the 'examples' folder.
+        :type arguments: JSON
         :return: False when something went wrong, or json data with all information from the just created user.
         :Example:
 
@@ -118,6 +119,7 @@ class Syncope(object):
         """Will get all data from specific user, specified via id.
 
         :param id: The id of the user to get information.
+        :type id: int
         :return: False when something went wrong, or json data with all information from this specific user.
         :Example:
 
@@ -140,6 +142,7 @@ class Syncope(object):
         """Will search an user. It will require an python dict to be used for the searching.
 
         :param arguments: An JSON structure. See example for more information.
+        :type arguments: JSON
         :return: False when something went wrong, or json data with all information from the search request.
         :Example:
 
@@ -166,6 +169,7 @@ class Syncope(object):
         """Will count the users matching the search request.
 
         :param arguments: An JSON structure. See example for more information.
+        :type arguments: JSON
         :return: False when something went wrong, or the amount of users matching the request.
         :Example:
 
@@ -192,8 +196,11 @@ class Syncope(object):
         """Will search an user and will return the data by pages.
 
         :param arguments: An JSON structure. See example for more information.
+        :type arguments: JSON
         :param page: The page it should return.
+        :type page: int
         :param size: The amount of results per page.
+        :type size: int
         :return: False when something went wrong, or json data with all information from the search request.
         :Example:
 
@@ -223,6 +230,7 @@ class Syncope(object):
         """Will get all data from specific user, specified via username.
 
         :param username: The username of the user to get information.
+        :type username: string
         :return: False when something went wrong, or json data with all information from this specific user.
         :Example:
 
@@ -262,6 +270,7 @@ class Syncope(object):
         """Will activate an user.
 
         :param id: The id of the user to activate.
+        :type id: int
         :return: False when something went wrong, or json data with all information from this specific user.
         """
         if id is None:
@@ -277,6 +286,7 @@ class Syncope(object):
         """Will activate an user.
 
         :param username: The username of the user to activate.
+        :type username: string
         :return: False when something went wrong, or json data with all information from this specific user.
         """
         if username is None:
@@ -292,6 +302,7 @@ class Syncope(object):
         """Will reactivate an user.
 
         :param id: The id of the user to reactivate.
+        :type id: int
         :return: False when something went wrong, or json data with all information from this specific user.
         """
         if id is None:
@@ -307,6 +318,7 @@ class Syncope(object):
         """Will reactivate an user.
 
         :param username: The username of the user to reactivate.
+        :type username: string
         :return: False when something went wrong, or json data with all information from this specific user.
         """
         if username is None:
@@ -322,6 +334,7 @@ class Syncope(object):
         """Will suspend an user.
 
         :param id: The id of the user to suspend.
+        :type id: int
         :return: False when something went wrong, or json data with all information from this specific user.
         """
         if id is None:
@@ -337,6 +350,7 @@ class Syncope(object):
         """Will suspend an user.
 
         :param username: The username of the user to suspend.
+        :type username: string
         :return: False when something went wrong, or json data with all information from this specific user.
         """
         if username is None:
@@ -352,6 +366,7 @@ class Syncope(object):
         """Will delete an user.
 
         :param id: The id of the user to delete.
+        :type id: int
         :return: True when user is deleted, False when user don't exists or something failed.
         """
         if id is None:
