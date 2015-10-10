@@ -9,7 +9,6 @@ import sys
 import re
 import ast
 
-
 here = os.path.abspath(os.path.dirname(__file__))
 
 
@@ -45,13 +44,14 @@ requires = [
 class PyTest(TestCommand):
     def finalize_options(self):
         TestCommand.finalize_options(self)
-        self.test_args = ['--strict', '--verbose', '--tb=long', 'test/test_syncope.py']
+        self.test_args = ['--strict', '--verbose', '--tb=long', '--cov="syncope"', 'tests']
         self.test_suite = True
 
     def run_tests(self):
         import pytest
         errno = pytest.main(self.test_args)
         sys.exit(errno)
+
 
 setup(name='python-syncope',
       version=info.get('__version__', '0.0.0'),
@@ -69,7 +69,7 @@ setup(name='python-syncope',
       tests_require=['pytest'],
       cmdclass={'test': PyTest},
       platforms='any',
-      test_suite='syncope.test.test_syncope',
+      test_suite='syncope.tests.test_syncope',
       extras_require={
         'testing': ['pytest'],
       },
