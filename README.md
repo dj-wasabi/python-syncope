@@ -25,6 +25,14 @@ At the moment, only some user specific actions can be executed against an Syncop
 
 At the moment, the python-syncope will only work on the Syncope 1.1.x releases. Goal is that it will support 1.2 too.
 
+
+| Python | syncope 1.1 | syncope 1.2 |
+|--------|-------------|-------------|
+|  2.7   |     v       |      x      |
+|--------|-------------|-------------|
+|        |             |             |
+
+
 #Installation
 
     pip install python-syncope
