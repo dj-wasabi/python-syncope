@@ -7,7 +7,6 @@ __license__ = "Apache License 2.0"
 __email__ = "ikben@werner-dijkerman.nl"
 
 import requests
-import json
 
 
 class Syncope(object):
@@ -272,6 +271,12 @@ class Syncope(object):
         :param id: The id of the user to activate.
         :type id: int
         :return: False when something went wrong, or json data with all information from this specific user.
+        :Example:
+
+        >>> import syncope
+        >>> syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
+        >>> print syn.edit_users_id_activate(1)
+        {u'status': u'active', u'username': u'rossini', <cut>}
         """
         if id is None:
             raise ValueError('This search needs an id to work!')
@@ -288,6 +293,12 @@ class Syncope(object):
         :param username: The username of the user to activate.
         :type username: string
         :return: False when something went wrong, or json data with all information from this specific user.
+        :Example:
+
+        >>> import syncope
+        >>> syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
+        >>> print syn.edit_users_username_activate("rossini")
+        {u'status': u'active', u'username': u'rossini', <cut>}
         """
         if username is None:
             raise ValueError('This search needs an username to work!')
@@ -304,6 +315,12 @@ class Syncope(object):
         :param id: The id of the user to reactivate.
         :type id: int
         :return: False when something went wrong, or json data with all information from this specific user.
+        :Example:
+
+        >>> import syncope
+        >>> syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
+        >>> print syn.edit_users_id_reactivate(1)
+        {u'status': u'active', u'username': u'rossini', <cut>}
         """
         if id is None:
             raise ValueError('This search needs an id to work!')
@@ -320,6 +337,12 @@ class Syncope(object):
         :param username: The username of the user to reactivate.
         :type username: string
         :return: False when something went wrong, or json data with all information from this specific user.
+        :Example:
+
+        >>> import syncope
+        >>> syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
+        >>> print syn.edit_users_username_reactivate("rossini")
+        {u'status': u'active', u'username': u'rossini', <cut>}
         """
         if username is None:
             raise ValueError('This search needs an username to work!')
@@ -336,6 +359,12 @@ class Syncope(object):
         :param id: The id of the user to suspend.
         :type id: int
         :return: False when something went wrong, or json data with all information from this specific user.
+        :Example:
+
+        >>> import syncope
+        >>> syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
+        >>> print syn.edit_users_id_suspend(1)
+        {u'status': u'suspended', u'username': u'rossini', <cut>}
         """
         if id is None:
             raise ValueError('This search needs an id to work!')
@@ -352,6 +381,12 @@ class Syncope(object):
         :param username: The username of the user to suspend.
         :type username: string
         :return: False when something went wrong, or json data with all information from this specific user.
+        :Example:
+
+        >>> import syncope
+        >>> syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
+        >>> print syn.edit_users_username_suspend("rossini")
+        {u'status': u'suspended', u'username': u'rossini', <cut>}
         """
         if username is None:
             raise ValueError('This search needs an username to work!')
@@ -372,7 +407,7 @@ class Syncope(object):
         if id is None:
             raise ValueError('This search needs an id to work!')
 
-        data = self._delete(self.rest_users + "/" + str(id))
+        data = self._get("/syncope/rest/user/delete/" + str(id))
 
         if data.status_code == 200:
             return True

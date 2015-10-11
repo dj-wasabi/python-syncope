@@ -10,12 +10,6 @@ Welcome to python-syncope's documentation!
     :target: http://python-syncope.readthedocs.org/en/latest/?badge=latest
     :alt: Documentation Status
 
-Contents:
-
-.. toctree::
-   :maxdepth: 2
-       Overview
-
 
 Overview
 ========
@@ -36,6 +30,7 @@ Installation can be done with:
 API doc
 =======
 
+Overview of the python-syncope api function that can be used to do your stuff.
 
 .. automodule:: syncope
 
