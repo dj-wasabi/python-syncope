@@ -4,11 +4,12 @@ Below an overview of all changes in the releases.
 
 Version (Release date)
 
-0.0.2   (2015-10-??)
+0.0.2   (2015-10-11)
 
   * Completed all "User" related actions.
   * Added examples folder with the first example: create_users.py
   * Added CHANGELOG.md
+  * Added tests
 
 0.0.1   (2015-10-03)
 
