@@ -28,7 +28,7 @@ At the moment, the python-syncope will only work on the Syncope 1.1.x releases. 
 
 | Python | syncope 1.1 | syncope 1.2 |
 |--------|:-----------:|:-----------:|
-|  2.7   |     [x]     |      [ ]    |
+|  2.7   |    - [x]    |    - [ ]    |
 |        |             |             |
 
 
