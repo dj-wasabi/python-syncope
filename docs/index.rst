@@ -14,7 +14,8 @@ Welcome to python-syncope's documentation!
 Overview
 ========
 
-This is an python wrapper for the Syncope REST API. You'll be able to get, create and update User, roles and a lot more via the API.
+This is an python wrapper for the Syncope REST API. You'll be able to get, create and update User, roles and a lot more via the API. You'll need basic understanding of JSON to use this module properly.
+I tried to add a lot of example on how to use the functions in this module. If you do however find something that might be documented better, please let me know. Also check the 'examples' directory on github for examples.
 
 
 Installation
@@ -27,10 +28,13 @@ Installation can be done with:
     pip install python-syncope
 
 
+.. include:: test_results.rst
+
+
 API doc
 =======
 
-Overview of the python-syncope api function that can be used to do your stuff.
+Overview of the python-syncope api functions that can be used on your script(s).
 
 .. automodule:: syncope
 

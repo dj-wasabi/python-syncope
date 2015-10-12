@@ -142,6 +142,15 @@ def test_delete_user_by_id():
     assert syn.delete_user_by_id(user_id) == True
 
 
+def test_get_users():
+    """Will test to get all users.
+
+    :return: Should return: 5
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
+    user_data = syn.get_users()
+    assert len(user_data) == 5
+
 # def test_create_users_to_enable():
 #     syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
 #     create_user = '{"attributes": [{"schema": "aLong","values": [],"readonly": false},{"schema": "activationDate","values": [1420074061],"readonly": false},{"schema": "cool","values": ["false"],"readonly": false},{"schema": "email","values": ["ikben@werner-dijkerman.nlx"],"readonly": false},{"schema": "firstname","values": ["Werner"],"readonly": false},{"schema": "fullname","values": ["Werner Dijkerman"],"readonly": false},{"schema": "gender","values": ["M"],"readonly": false},{"schema": "loginDate","values": [""],"readonly": false},{"schema": "makeItDouble","values": [],"readonly": false},{"schema": "surname","values": ["Dijkerman"],"readonly": false},{"schema": "type","values": ["account"],"readonly": false},{"schema": "uselessReadonly","values": [""],"readonly": true},{"schema": "userId","values": ["werner@dj-wasabi.nl"],"readonly": false}],"id": 0,"derivedAttributes": [{"schema": "cn","values": [],"readonly": false}],"virtualAttributes": [],"password": "password1234","status": null,"token": null,"tokenExpireTime": null,"username": "wdijkerman","lastLoginDate": null,"creationDate": null,"changePwdDate": null,"failedLogins": null}'
