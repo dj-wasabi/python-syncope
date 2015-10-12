@@ -2,7 +2,7 @@
 
 
 __author__ = 'Werner Dijkerman'
-__version__ = '0.0.2'
+__version__ = '0.0.3'
 __license__ = "Apache License 2.0"
 __email__ = "ikben@werner-dijkerman.nl"
 
@@ -80,7 +80,7 @@ class Syncope(object):
 
         return requests.post(syncope_path, auth=(self.username, self.password), headers=self.headers, data=arguments, timeout=self.timeout)
 
-    def create_users(self, arguments):
+    def create_user(self, arguments):
         """Will create an user.
 
         :param arguments: An JSON structure for creating the user. An example can be found in the 'examples' folder.
@@ -114,7 +114,7 @@ class Syncope(object):
         else:
             return False
 
-    def get_users_id(self, id=None):
+    def get_user_by_id(self, id=None):
         """Will get all data from specific user, specified via id.
 
         :param id: The id of the user to get information.
@@ -124,7 +124,7 @@ class Syncope(object):
 
         >>> import syncope
         >>> syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
-        >>> print syn.get_users_id(5)
+        >>> print syn.get_user_by_id(5)
         {u'status': u'active', u'username': u'puccini', <cut>}
         """
         if id is None:
@@ -137,7 +137,7 @@ class Syncope(object):
         else:
             return False
 
-    def get_users_search(self, arguments=None):
+    def get_users_by_query(self, arguments=None):
         """Will search an user. It will require an python dict to be used for the searching.
 
         :param arguments: An JSON structure. See example for more information.
@@ -148,10 +148,10 @@ class Syncope(object):
         >>> import syncope
         >>> syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
         >>> search_req = '{"type":"LEAF","attributableCond":{"type":"EQ","schema":"username","expression":"vivaldi"}}'
-        >>> print syn.get_users_search(search_req)
+        >>> print syn.get_users_by_query(search_req)
         {u'status': u'active', u'username': u'vivaldi', <cut>}
         >>> search_req = '{"type":"LEAF","resourceCond":{"resourceName":"ws-target-resource-1"}}'
-        >>> print syn.get_users_search(search_req)
+        >>> print syn.get_users_by_query(search_req)
         {u'status': u'active', u'username': u'vivaldi', <cut>}
         """
         if arguments is None:
@@ -164,7 +164,7 @@ class Syncope(object):
         else:
             return False
 
-    def get_users_search_count(self, arguments=None):
+    def get_user_count_by_query(self, arguments=None):
         """Will count the users matching the search request.
 
         :param arguments: An JSON structure. See example for more information.
@@ -175,10 +175,10 @@ class Syncope(object):
         >>> import syncope
         >>> syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
         >>> search_req = '{"type":"LEAF","attributableCond":{"type":"EQ","schema":"username","expression":"vivaldi"}}'
-        >>> print syn.get_users_search_count(search_req)
+        >>> print syn.get_user_count_by_query(search_req)
         5
         >>> search_req = '{"type":"LEAF","resourceCond":{"resourceName":"ws-target-resource-1"}}'
-        >>> print syn.get_users_search_count(search_req)
+        >>> print syn.get_user_count_by_query(search_req)
         1
         """
         if arguments is None:
@@ -191,7 +191,7 @@ class Syncope(object):
         else:
             return False
 
-    def get_users_search_page(self, arguments=None, page=None, size=None):
+    def get_paged_users_by_query(self, arguments=None, page=None, size=None):
         """Will search an user and will return the data by pages.
 
         :param arguments: An JSON structure. See example for more information.
@@ -206,9 +206,9 @@ class Syncope(object):
         >>> import syncope
         >>> syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
         >>> search_req = '{"type":"LEAF","attributableCond":{"type":"EQ","schema":"status","expression":"active"}}'
-        >>> print syn.get_users_search_page(search_user, 1, 1)
+        >>> print syn.get_paged_users_by_query(search_user, 1, 1)
         {u'status': u'active', u'username': u'rossini', <cut>}
-        >>> print syn.get_users_search_page(search_user, 3, 1)
+        >>> print syn.get_paged_users_by_query(search_user, 3, 1)
         {u'status': u'active', u'username': u'vivaldi', <cut>}
         """
         if arguments is None:
@@ -225,7 +225,7 @@ class Syncope(object):
         else:
             return False
 
-    def get_users_username(self, username=None):
+    def get_user_by_name(self, username=None):
         """Will get all data from specific user, specified via username.
 
         :param username: The username of the user to get information.
@@ -235,7 +235,7 @@ class Syncope(object):
 
         >>> import syncope
         >>> syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
-        >>> print syn.get_users_username("puccini")
+        >>> print syn.get_user_by_name("puccini")
         {u'status': u'active', u'username': u'puccini', <cut>}
         """
         if username is None:
@@ -265,7 +265,7 @@ class Syncope(object):
         else:
             return False
 
-    def edit_users_id_activate(self, id=None):
+    def enable_user_by_id(self, id=None):
         """Will activate an user.
 
         :param id: The id of the user to activate.
@@ -275,7 +275,7 @@ class Syncope(object):
 
         >>> import syncope
         >>> syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
-        >>> print syn.edit_users_id_activate(1)
+        >>> print syn.enable_user_by_id(1)
         {u'status': u'active', u'username': u'rossini', <cut>}
         """
         if id is None:
@@ -287,7 +287,7 @@ class Syncope(object):
         else:
             return False
 
-    def edit_users_username_activate(self, username=None):
+    def enable_user_by_name(self, username=None):
         """Will activate an user.
 
         :param username: The username of the user to activate.
@@ -297,7 +297,7 @@ class Syncope(object):
 
         >>> import syncope
         >>> syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
-        >>> print syn.edit_users_username_activate("rossini")
+        >>> print syn.enable_user_by_name("rossini")
         {u'status': u'active', u'username': u'rossini', <cut>}
         """
         if username is None:
@@ -309,7 +309,7 @@ class Syncope(object):
         else:
             return False
 
-    def edit_users_id_reactivate(self, id=None):
+    def reactivate_user_by_id(self, id=None):
         """Will reactivate an user.
 
         :param id: The id of the user to reactivate.
@@ -319,7 +319,7 @@ class Syncope(object):
 
         >>> import syncope
         >>> syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
-        >>> print syn.edit_users_id_reactivate(1)
+        >>> print syn.reactivate_user_by_id(1)
         {u'status': u'active', u'username': u'rossini', <cut>}
         """
         if id is None:
@@ -331,7 +331,7 @@ class Syncope(object):
         else:
             return False
 
-    def edit_users_username_reactivate(self, username=None):
+    def reactivate_user_by_name(self, username=None):
         """Will reactivate an user.
 
         :param username: The username of the user to reactivate.
@@ -341,7 +341,7 @@ class Syncope(object):
 
         >>> import syncope
         >>> syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
-        >>> print syn.edit_users_username_reactivate("rossini")
+        >>> print syn.reactivate_user_by_name("rossini")
         {u'status': u'active', u'username': u'rossini', <cut>}
         """
         if username is None:
@@ -353,7 +353,7 @@ class Syncope(object):
         else:
             return False
 
-    def edit_users_id_suspend(self, id=None):
+    def suspend_user_by_id(self, id=None):
         """Will suspend an user.
 
         :param id: The id of the user to suspend.
@@ -363,7 +363,7 @@ class Syncope(object):
 
         >>> import syncope
         >>> syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
-        >>> print syn.edit_users_id_suspend(1)
+        >>> print syn.suspend_user_by_id(1)
         {u'status': u'suspended', u'username': u'rossini', <cut>}
         """
         if id is None:
@@ -375,7 +375,7 @@ class Syncope(object):
         else:
             return False
 
-    def edit_users_username_suspend(self, username=None):
+    def suspend_user_by_name(self, username=None):
         """Will suspend an user.
 
         :param username: The username of the user to suspend.
@@ -385,7 +385,7 @@ class Syncope(object):
 
         >>> import syncope
         >>> syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
-        >>> print syn.edit_users_username_suspend("rossini")
+        >>> print syn.suspend_user_by_("rossini")
         {u'status': u'suspended', u'username': u'rossini', <cut>}
         """
         if username is None:
@@ -397,7 +397,7 @@ class Syncope(object):
         else:
             return False
 
-    def delete_users_id(self, id=None):
+    def delete_user_by_id(self, id=None):
         """Will delete an user.
 
         :param id: The id of the user to delete.
