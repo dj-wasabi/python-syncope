@@ -17,9 +17,12 @@ Overview of the test results from the latest working version. Also the Test cove
     tests/test_syncope.py::test_suspend_user_by_name PASSED
     tests/test_syncope.py::test_reactivate_user_by_name PASSED
     tests/test_syncope.py::test_create_user PASSED
+    tests/test_syncope.py::test_update_user PASSED
     tests/test_syncope.py::test_delete_user_by_id PASSED
     tests/test_syncope.py::test_get_users PASSED
-    --------------- coverage: platform darwin, python 2.7.10-final-0 ---------------
+    ------------------------------------------------------ coverage: platform darwin, python 2.7.10-final-0 -------------------------------------------------------
     Name                  Stmts   Miss  Cover
     -----------------------------------------
-    syncope/__init__.py     137     42    69%
+    syncope/__init__.py     142     43    70%
+
+    ================================================================== 15 passed in 1.30 seconds ==================================================================

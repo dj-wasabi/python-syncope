@@ -102,6 +102,27 @@ class Syncope(object):
         else:
             return False
 
+    def update_user(self, arguments):
+        """Will update an user.
+
+        :param arguments: An JSON structure for updating the user. An example can be found in the 'examples' folder.
+        :type arguments: JSON
+        :return: False when something went wrong, or json data with all information from the just updated user.
+        :Example:
+
+        >>> import syncope
+        >>> syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
+        >>> update_user = '{"id":137,"attributesToBeUpdated":[{"schema":"uselessReadonly","valuesToBeAdded":[],"valuesToBeRemoved":[]},{"schema":"loginDate","valuesToBeAdded":[],"valuesToBeRemoved":[]},{"schema":"activationDate","valuesToBeAdded":[],"valuesToBeRemoved":[]}],"attributesToBeRemoved":["aLong","makeItDouble"],"derivedAttributesToBeAdded":[],"derivedAttributesToBeRemoved":[],"virtualAttributesToBeUpdated":[],"virtualAttributesToBeRemoved":[],"resourcesToBeAdded":[],"resourcesToBeRemoved":[],"password":null,"username":"wdijkerman","membershipsToBeAdded":[],"membershipsToBeRemoved":[],"pwdPropRequest":{"resources":[],"onSyncope":false}}'
+        >>> print syn.update_user(update_user)
+        {u'status': u'active', u'username': u'wdijkerman', u'creationDate': 1444676322330, <cut>}
+        """
+        data = self._post("/syncope/rest/user/update", arguments)
+
+        if data.status_code == 200:
+            return data.json()
+        else:
+            return False
+
     def get_users(self):
         """Get information from all users in JSON.
 

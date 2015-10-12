@@ -120,13 +120,26 @@ def test_reactivate_user_by_name():
 
 
 def test_create_user():
-    """Will create an user wdijkerman
+    """Will create an user weedijkerman
+
+    :return: Should return: weedijkerman
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
+    create_user = '{"attributes": [{"schema": "aLong","values": [],"readonly": false},{"schema": "activationDate","values": [""],"readonly": false},{"schema": "cool","values": ["false"],"readonly": false},{"schema": "email","values": ["ikben@werner-dijkerman.nlx"],"readonly": false},{"schema": "firstname","values": ["Werner"],"readonly": false},{"schema": "fullname","values": ["Werner Dijkerman"],"readonly": false},{"schema": "gender","values": ["M"],"readonly": false},{"schema": "loginDate","values": [""],"readonly": false},{"schema": "makeItDouble","values": [],"readonly": false},{"schema": "surname","values": ["Dijkerman"],"readonly": false},{"schema": "type","values": ["account"],"readonly": false},{"schema": "uselessReadonly","values": [""],"readonly": true},{"schema": "userId","values": ["werner@dj-wasabi.nl"],"readonly": false}],"id": 0,"derivedAttributes": [{"schema": "cn","values": [],"readonly": false}],"virtualAttributes": [],"password": "password1234","status": null,"token": null,"tokenExpireTime": null,"username": "weedijkerman","lastLoginDate": null,"creationDate": null,"changePwdDate": null,"failedLogins": null}'
+    user_data = syn.create_user(create_user)
+    assert user_data['username'] == "weedijkerman"
+
+
+def test_update_user():
+    """Will update the user weedijkerman to wdijkerman.
 
     :return: Should return: wdijkerman
     """
     syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
-    create_user = '{"attributes": [{"schema": "aLong","values": [],"readonly": false},{"schema": "activationDate","values": [""],"readonly": false},{"schema": "cool","values": ["false"],"readonly": false},{"schema": "email","values": ["ikben@werner-dijkerman.nlx"],"readonly": false},{"schema": "firstname","values": ["Werner"],"readonly": false},{"schema": "fullname","values": ["Werner Dijkerman"],"readonly": false},{"schema": "gender","values": ["M"],"readonly": false},{"schema": "loginDate","values": [""],"readonly": false},{"schema": "makeItDouble","values": [],"readonly": false},{"schema": "surname","values": ["Dijkerman"],"readonly": false},{"schema": "type","values": ["account"],"readonly": false},{"schema": "uselessReadonly","values": [""],"readonly": true},{"schema": "userId","values": ["werner@dj-wasabi.nl"],"readonly": false}],"id": 0,"derivedAttributes": [{"schema": "cn","values": [],"readonly": false}],"virtualAttributes": [],"password": "password1234","status": null,"token": null,"tokenExpireTime": null,"username": "wdijkerman","lastLoginDate": null,"creationDate": null,"changePwdDate": null,"failedLogins": null}'
-    user_data = syn.create_user(create_user)
+    user_data = syn.get_user_by_name("weedijkerman")
+    user_id = int(user_data['id'])
+    update_user = '{"id":' + str(user_id) + ',"attributesToBeUpdated":[{"schema":"uselessReadonly","valuesToBeAdded":[],"valuesToBeRemoved":[]},{"schema":"loginDate","valuesToBeAdded":[],"valuesToBeRemoved":[]},{"schema":"activationDate","valuesToBeAdded":[],"valuesToBeRemoved":[]}],"attributesToBeRemoved":["aLong","makeItDouble"],"derivedAttributesToBeAdded":[],"derivedAttributesToBeRemoved":[],"virtualAttributesToBeUpdated":[],"virtualAttributesToBeRemoved":[],"resourcesToBeAdded":[],"resourcesToBeRemoved":[],"password":null,"username":"wdijkerman","membershipsToBeAdded":[],"membershipsToBeRemoved":[],"pwdPropRequest":{"resources":[],"onSyncope":false}}'
+    user_data = syn.update_user(update_user)
     assert user_data['username'] == "wdijkerman"
 
 
@@ -150,6 +163,9 @@ def test_get_users():
     syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
     user_data = syn.get_users()
     assert len(user_data) == 5
+
+
+
 
 # def test_create_users_to_enable():
 #     syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
