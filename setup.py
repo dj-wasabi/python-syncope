@@ -44,7 +44,7 @@ requires = [
 class PyTest(TestCommand):
     def finalize_options(self):
         TestCommand.finalize_options(self)
-        self.test_args = ['--strict', '--verbose', '--tb=long', '--cov=syncope', 'tests']
+        self.test_args = ['--strict', '--verbose', '--tb=long', '--cov-report', 'term-missing', '--junitxml=docs/results.xml', '--cov=syncope', 'tests']
         self.test_suite = True
 
     def run_tests(self):
