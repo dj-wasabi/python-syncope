@@ -36,6 +36,7 @@ class Syncope(object):
         self.username = username
         self.password = password
         self.timeout = int(timeout)
+        self.rest_roles = 'syncope/cxf/roles'
         self.rest_users = 'syncope/cxf/users'
 
     def _get(self, rest_path, arguments=None):
@@ -432,5 +433,40 @@ class Syncope(object):
 
         if data.status_code == 200:
             return True
+        else:
+            return False
+
+    def get_roles(self):
+        """Get information from all roles in JSON.
+
+        :return: False when something went wrong, or json data with all information from all roles.
+        """
+        data = self._get(self.rest_roles)
+
+        if data.status_code == 200:
+            return data.json()
+        else:
+            return False
+
+    def get_role_by_id(self, id=None):
+        """Will get all data from specific role, specified via id.
+
+        :param id: The id of the role to get information.
+        :type id: int
+        :return: False when something went wrong, or json data with all information from this specific role.
+        :Example:
+
+        >>> import syncope
+        >>> syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
+        >>> print syn.get_role_by_id(2)
+        {u'inheritVirtualAttributes': False, u'inheritDerivedAttributes': False, u'roleOwner': None, u'name': u'child', u'parent': 1, <cut>}
+        """
+        if id is None:
+            raise ValueError('This search needs an id to work!')
+
+        data = self._get(self.rest_roles + "/" + str(id))
+
+        if data.status_code == 200:
+            return data.json()
         else:
             return False
