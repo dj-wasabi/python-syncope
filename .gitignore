@@ -3,6 +3,7 @@
 
 # files
 *.pyc
+docs/results.xml
 
 # Packages
 *.egg
@@ -24,3 +25,4 @@ __pycache__
 
 # build dir
 docs/_build
+docs/generated

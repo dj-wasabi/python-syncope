@@ -1,5 +1,22 @@
-Test Results
-============
+Tests
+=====
+
+Overview
+--------
+
+The following python versions are working:
+
++--------+-------------+-------------+
+| python | Syncope 1.1 | Syncope 1.2 |
++========+=============+=============+
+|  2.7   |     v       |      x      |
++--------+-------------+-------------+
+
+
+
+
+Coverage
+--------
 
 Overview of the test results from the latest working version. Also the Test coverage is shown:
 
@@ -25,10 +42,26 @@ Overview of the test results from the latest working version. Also the Test cove
     tests/test_syncope.py::test_delete_user_by_id PASSED
     tests/test_syncope.py::test_get_users PASSED
     tests/test_syncope.py::test_get_roles PASSED
+    tests/test_syncope.py::test_get_roles_false PASSED
     tests/test_syncope.py::test_get_role_by_id PASSED
+    tests/test_syncope.py::test_get_role_by_id_false PASSED
+    tests/test_syncope.py::test_get_role_by_id_raise PASSED
+    tests/test_syncope.py::test_get_parent_role_by_id PASSED
+    tests/test_syncope.py::test_get_parent_role_by_id_false PASSED
+    tests/test_syncope.py::test_get_parent_role_by_id_raise PASSED
+    tests/test_syncope.py::test_get_children_role_by_id PASSED
+    tests/test_syncope.py::test_get_children_role_by_id_false PASSED
+    tests/test_syncope.py::test_get_children_role_by_id_raise PASSED
+    tests/test_syncope.py::test_create_role PASSED
+    tests/test_syncope.py::test_create_role_false PASSED
+    tests/test_syncope.py::test_create_role_raise PASSED
+    tests/test_syncope.py::test_update_role PASSED
+    tests/test_syncope.py::test_update_role_false PASSED
+    tests/test_syncope.py::test_update_role_railse PASSED
+    tests/test_syncope.py::test_delete_role PASSED
+    tests/test_syncope.py::test_delete_role_false PASSED
+    tests/test_syncope.py::test_delete_role_raise PASSED
     ------------------------------------------------------ coverage: platform darwin, python 2.7.10-final-0 -------------------------------------------------------
     Name                  Stmts   Miss  Cover   Missing
     ---------------------------------------------------
-    syncope/__init__.py     155     42    73%
-
-    ================================================================== 21 passed in 2.04 seconds ==================================================================
+    syncope/__init__.py     190     39    79%
