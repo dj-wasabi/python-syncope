@@ -213,21 +213,226 @@ def test_get_users():
 #     user_data = syn.create_users(create_user)
 #     assert user_data['username'] == "wdijkerman"
 
+
 def test_get_roles():
     """Will test to get all roles.
 
-    :return: Should return: 5
+    :return: Should return: 14
     """
     syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
     roles_data = syn.get_roles()
     assert len(roles_data) == 14
 
-def test_get_role_by_id():
-    """Will get all information for user with id: 2.
 
-    :return: Should return: puccini
+def test_get_roles_false():
+    """Will test to get all roles. (Wrong password)
+
+    :return: Should return: False
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="passwrd")
+    roles_data = syn.get_roles()
+    assert roles_data == False
+
+
+def test_get_role_by_id():
+    """Will get all information for the role with id: 2.
+
+    :return: Should return: child
     """
     syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
     role_data = syn.get_role_by_id(2)
     role_name = role_data['name']
     assert role_name == "child"
+
+
+def test_get_role_by_id_false():
+    """Will get all information for the role with id: 22.
+
+    :return: Should return: False
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+    role_data = syn.get_role_by_id(22)
+    assert role_data == False
+
+
+def test_get_role_by_id_raise():
+    """ Will test if an id is given as argument.
+
+    :return: Should catch the ValueError.
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+    with pytest.raises(ValueError) as excinfo:
+        syn.get_role_by_id()
+    assert excinfo.value.message == 'This search needs an id to work!'
+
+
+def test_get_parent_role_by_id():
+    """Will get all information for role with id: 2.
+
+    :return: Should return: root
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+    role_data = syn.get_parent_role_by_id(2)
+    role_name = role_data['name']
+    assert role_name == "root"
+
+
+def test_get_parent_role_by_id_false():
+    """Will get all parent information for role with id: 21.
+
+    :return: Should return: False
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+    role_data = syn.get_parent_role_by_id(21)
+    assert role_data == False
+
+
+def test_get_parent_role_by_id_raise():
+    """ Will test if an id is given as argument.
+
+    :return: Should catch the ValueError.
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+    with pytest.raises(ValueError) as excinfo:
+        syn.get_parent_role_by_id()
+    assert excinfo.value.message == 'This search needs an id to work!'
+
+
+def test_get_children_role_by_id():
+    """Will get all children information for role with id: 4.
+
+    :return: Should return: secretary
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+    role_data = syn.get_children_role_by_id(4)
+    role_name = role_data[0]['name']
+    assert role_name == "secretary"
+
+
+def test_get_children_role_by_id_false():
+    """Will get all children information for role with id: 24.
+
+    :return: Should return: False
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+    role_data = syn.get_children_role_by_id(24)
+    assert role_data == False
+
+
+def test_get_children_role_by_id_raise():
+    """ Will test if an id is given as argument.
+
+    :return: Should catch the ValueError.
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+    with pytest.raises(ValueError) as excinfo:
+        syn.get_children_role_by_id()
+    assert excinfo.value.message == 'This search needs an id to work!'
+
+
+def test_create_role():
+    """Will create an role with name 'my_new_role'.
+
+    :return: Should return: secretary
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+    my_role = '{"attributes":[{"schema":"icon","values":[],"readonly":false},{"schema":"rderived_dx","values":[],"readonly":false},{"schema":"rderived_sx","values":[],"readonly":false},{"schema":"show","values":["false"],"readonly":false},{"schema":"title","values":["My new attribute Title."],"readonly":false}],"id":0,"derivedAttributes":[],"virtualAttributes":[],"resources":["ws-target-resource-2","ws-target-resource-1"],"propagationStatusTOs":[],"name":"my_new_role","parent":1,"userOwner":null,"roleOwner":null,"inheritOwner":true,"inheritAttributes":false,"inheritDerivedAttributes":false,"inheritVirtualAttributes":false,"inheritPasswordPolicy":false,"inheritAccountPolicy":false,"entitlements":["CONFIGURATION_CREATE","CONFIGURATION_DELETE"],"passwordPolicy":4,"accountPolicy":6}'
+    role_data = syn.create_role(my_role)
+    role_name = role_data['name']
+    assert role_name == "my_new_role"
+
+
+def test_create_role_false():
+    """Will create an rolec
+
+    :return: Should return: False
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+    my_role = '{}'
+    role_data = syn.create_role(my_role)
+    assert role_data == False
+
+
+def test_create_role_raise():
+    """ Will test if an JSON is given as argument.
+
+    :return: Should catch the ValueError.
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+    with pytest.raises(ValueError) as excinfo:
+        syn.create_role()
+    assert excinfo.value.message == 'This search needs JSON data to work!'
+
+
+def test_update_role():
+    """Will update the role created in previous test.
+
+    :return: Should return: True
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+    roles_data = syn.get_roles()
+    for role in roles_data:
+        if role['name'] == 'my_new_role':
+            role_id = role['id']
+    my_role = '{"id":' + str(role_id) + ',"attributesToBeUpdated":[],"attributesToBeRemoved":["icon","rderived_sx","rderived_dx"],"derivedAttributesToBeAdded":[],"derivedAttributesToBeRemoved":[],"virtualAttributesToBeUpdated":[],"virtualAttributesToBeRemoved":[],"resourcesToBeAdded":[],"resourcesToBeRemoved":["ws-target-resource-2"],"name":"my_new_role_upd","userOwner":{"id":null},"roleOwner":{"id":null},"inheritOwner":true,"inheritAttributes":false,"inheritDerivedAttributes":false,"inheritVirtualAttributes":false,"inheritAccountPolicy":false,"inheritPasswordPolicy":false,"entitlements":["CONFIGURATION_CREATE","CONFIGURATION_DELETE","CONFIGURATION_UPDATE"],"passwordPolicy":{"id":4},"accountPolicy":{"id":6}}'
+    role_upd_data = syn.update_role(my_role)
+
+    role_name = role_upd_data['name']
+    assert role_name == 'my_new_role_upd'
+
+
+def test_update_role_false():
+    """Will update the role created in previous test, but no correct JSON was given as argument.
+
+    :return: Should return: False
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+    my_role = '{}'
+    assert syn.update_role(my_role) == False
+
+
+def test_update_role_railse():
+    """Will update the role created in previous test.
+
+    :return: Should return: True
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+    with pytest.raises(ValueError) as excinfo:
+        syn.update_role()
+    assert excinfo.value.message == 'This search needs JSON data to work!'
+
+
+def test_delete_role():
+    """Will delete the role created in previous test.
+
+    :return: Should return: True
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+    roles_data = syn.get_roles()
+
+    for role in roles_data:
+        if role['name'] == 'my_new_role_upd':
+            role_id = role['id']
+    assert syn.delete_role_by_id(role_id) == True
+
+
+def test_delete_role_false():
+    """Will delete the a non existing role.
+
+    :return: Should return: False
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+    assert syn.delete_role_by_id(9999999) == False
+
+
+def test_delete_role_raise():
+    """ Will test if an id is given as argument.
+
+    :return: Should catch the ValueError.
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+    with pytest.raises(ValueError) as excinfo:
+        syn.delete_role_by_id()
+    assert excinfo.value.message == 'This search needs an id to work!'
+
+

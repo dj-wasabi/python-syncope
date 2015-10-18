@@ -470,3 +470,115 @@ class Syncope(object):
             return data.json()
         else:
             return False
+
+    def get_parent_role_by_id(self, id=None):
+        """Will get all data for the parent of the provided role id.
+
+        :param id: The id of the role to get the parent information.
+        :type id: int
+        :return: False when something went wrong, or json data with all information from this specific role.
+        :Example:
+
+        >>> import syncope
+        >>> syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
+        >>> print syn.get_parent_role_by_id(2)
+        {u'inheritVirtualAttributes': False, u'inheritDerivedAttributes': False, u'roleOwner': None, u'name': u'root', u'parent': 0, <cut>}
+        """
+        if id is None:
+            raise ValueError('This search needs an id to work!')
+
+        data = self._get(self.rest_roles + "/" + str(id) + "/parent")
+
+        if data.status_code == 200:
+            return data.json()
+        else:
+            return False
+
+    def get_children_role_by_id(self, id=None):
+        """Will get all data for the parent of the provided role id.
+
+        :param id: The id of the role to get the parent information.
+        :type id: int
+        :return: False when something went wrong, or json data with all information from this specific role.
+        :Example:
+
+        >>> import syncope
+        >>> syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
+        >>> print syn.get_children_role_by_id(4)
+        [{u'inheritVirtualAttributes': False, u'inheritDerivedAttributes': False, u'roleOwner': None, u'name': u'secretary', u'parent': 4, <cut>}]
+        """
+        if id is None:
+            raise ValueError('This search needs an id to work!')
+
+        data = self._get(self.rest_roles + "/" + str(id) + "/children")
+
+        if data.status_code == 200:
+            return data.json()
+        else:
+            return False
+
+    def create_role(self, arguments=None):
+        """Will create an role.
+
+        :param arguments: An JSON structure for creating the role. An example can be found in the 'examples' folder.
+        :type arguments: JSON
+        :return: False when something went wrong, or json data with all information from the just created role.
+        :Example:
+
+        >>> import syncope
+        >>> syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
+        >>> create_role = '{"attributes":[{"schema":"icon","values":[],"readonly":false},{"schema":"rderived_dx","values":[],"readonly":false},{"schema":"rderived_sx","values":[],"readonly":false},{"schema":"show","values":["false"],"readonly":false},{"schema":"title","values":["My new attribute Title."],"readonly":false}],"id":0,"derivedAttributes":[],"virtualAttributes":[],"resources":["ws-target-resource-2","ws-target-resource-1"],"propagationStatusTOs":[],"name":"my_new_role","parent":1,"userOwner":null,"roleOwner":null,"inheritOwner":true,"inheritAttributes":false,"inheritDerivedAttributes":false,"inheritVirtualAttributes":false,"inheritPasswordPolicy":false,"inheritAccountPolicy":false,"entitlements":["CONFIGURATION_CREATE","CONFIGURATION_DELETE"],"passwordPolicy":4,"accountPolicy":6}'
+        >>> print syn.create_role(create_role)
+        {u'inheritVirtualAttributes': False, u'inheritDerivedAttributes': False, u'roleOwner': None, u'name': u'my_new_role', u'parent': 1, <cut>}
+        """
+        if arguments is None:
+            raise ValueError('This search needs JSON data to work!')
+
+        data = self._post(self.rest_roles, arguments)
+
+        if data.status_code == 201:
+            return data.json()
+        else:
+            return False
+
+    def delete_role_by_id(self, id=None):
+        """Will delete an role.
+
+        :param id: The id of the role to delete.
+        :type id: int
+        :return: True when role is deleted, False when role don't exists or something failed.
+        """
+        if id is None:
+            raise ValueError('This search needs an id to work!')
+
+        data = self._get("/syncope/rest/role/delete/" + str(id))
+
+        if data.status_code == 200:
+            return True
+        else:
+            return False
+
+    def update_role(self, arguments=None):
+        """Will update an role.
+
+        :param arguments: An JSON structure for updating the role.
+        :type arguments: JSON
+        :return: False when something went wrong, or json data with all information from the just updated role.
+        :Example:
+
+        >>> import syncope
+        >>> syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
+        >>> update_role = '{"id":102,"attributesToBeUpdated":[{"schema":"title","valuesToBeAdded":["My next new attribute Title."],"valuesToBeRemoved":["My new attribute Title."]}],"attributesToBeRemoved":["icon","rderived_sx","title","rderived_dx"],"derivedAttributesToBeAdded":[],"derivedAttributesToBeRemoved":[],"virtualAttributesToBeUpdated":[{"schema":"rvirtualdata","valuesToBeAdded":["virtual"],"valuesToBeRemoved":[]}],"virtualAttributesToBeRemoved":[],"resourcesToBeAdded":[],"resourcesToBeRemoved":["ws-target-resource-2"],"name":null,"userOwner":{"id":null},"roleOwner":{"id":null},"inheritOwner":true,"inheritAttributes":false,"inheritDerivedAttributes":false,"inheritVirtualAttributes":false,"inheritAccountPolicy":false,"inheritPasswordPolicy":false,"entitlements":["CONFIGURATION_CREATE","CONFIGURATION_DELETE","CONNECTOR_DELETE"],"passwordPolicy":{"id":4},"accountPolicy":{"id":6}}'
+        >>> print syn.update_role(update_role)
+        {u'inheritVirtualAttributes': False, u'inheritDerivedAttributes': False, u'roleOwner': None, u'name': u'my_new_role', u'parent': 1, <cut>}
+        """
+        if arguments is None:
+            raise ValueError('This search needs JSON data to work!')
+
+        data = self._post("/syncope/rest/role/update", arguments)
+
+        if data.status_code == 200:
+            return data.json()
+        else:
+            return False
+
