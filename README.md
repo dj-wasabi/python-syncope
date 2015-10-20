@@ -2,7 +2,7 @@ Work in progress
 =========
 
 [![Documentation Status](https://readthedocs.org/projects/python-syncope/badge/?version=latest)](http://python-syncope.readthedocs.org/en/latest/?badge=latest)
-[![Documentation Status](https://readthedocs.org/projects/python-syncope/badge/?version=0.0.2)](http://python-syncope.readthedocs.org/en/0.0.2/?badge=0.0.2)
+[![Documentation Status](https://readthedocs.org/projects/python-syncope/badge/?version=0.0.3)](http://python-syncope.readthedocs.org/en/0.0.3/?badge=0.0.3)
 
 ####Table of Contents
 1. [Overview](#overview)
@@ -45,9 +45,9 @@ How to use syncope:
     import syncope
     syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
     
-    print syn.edit_users_username_suspend("puccini")
-    print syn.edit_users_username_reactivate("puccini")
-    print syn.edit_users_username_reactivate("puccini")
+    print syn.suspend_user_by_name("puccini")
+    print syn.reactivate_user_by_name("puccini")
+    print syn.reactivate_user_by_name("puccini")
 Output:
 
     {u'status': u'suspended', u'username': u'puccini', u'creationDate': 1287572400000, u'derivedAttributes': [], u'failedLogins': 0, u'tokenExpireTime': None, u'memberships': [{u'derivedAttributes': [], u'roleName': u'artDirector', u'virtualAttributes': [], u'resources': [], u'roleId': 14, u'attributes': [], u'id': 7, u'propagationStatusTOs': []}], u'token': None, u'virtualAttributes': [], u'resources': [], u'lastLoginDate': None, u'changePwdDate': None, u'attributes': [{u'readonly': False, u'values': [u'Giacomo'], u'schema': u'firstname'}, {u'readonly': False, u'values': [u'Puccini'], u'schema': u'surname'}, {u'readonly': False, u'values': [u'Giacomo Puccini'], u'schema': u'fullname'}, {u'readonly': False, u'values': [u'puccini@apache.org'], u'schema': u'userId'}], u'password': u'5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', u'id': 5, u'propagationStatusTOs': []}
