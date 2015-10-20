@@ -4,7 +4,7 @@ Below an overview of all changes in the releases.
 
 Version (Release date)
 
-0.0.3   (2015-??-??)
+0.0.3   (2015-10-20)
 
   * Renamed the functions:
     * create_users -> create_user
@@ -20,7 +20,8 @@ Version (Release date)
     * get_users_search_page -> get_paged_users_by_query
     * get_users_search_count -> get_user_count_by_query
     * get_users_username -> get_user_by_name
-  * Added code coverage into documenation.
+  * Added code coverage into documentation.
+  * Added roles related actions.
 
 0.0.2   (2015-10-11)
 
