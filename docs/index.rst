@@ -40,6 +40,8 @@ An overview of the components on which Syncope version is working.
 +-----------+---------------+---------------+
 | Roles     |      v        |       x       |
 +-----------+---------------+---------------+
+| Logger    |      v        |       x       |
++-----------+---------------+---------------+
 
 This module is sill Work In Progress, so if you miss an specific action it will come.
 

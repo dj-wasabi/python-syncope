@@ -23,7 +23,7 @@ Overview of the test results from the latest working version. Also the Test cove
 .. code-block:: bash
 
     plugins: cov-2.2.0
-    collected 52 items
+    collected 59 items
 
     tests/test_syncope.py::test___init__syncope_url PASSED
     tests/test_syncope.py::test___init__username PASSED
@@ -77,7 +77,14 @@ Overview of the test results from the latest working version. Also the Test cove
     tests/test_syncope.py::test_delete_log_level_by_name PASSED
     tests/test_syncope.py::test_delete_log_level_by_name_false PASSED
     tests/test_syncope.py::test_delete_log_level_by_name_raise PASSED
+    tests/test_syncope.py::test_get_audit PASSED
+    tests/test_syncope.py::test_get_audit_false PASSED
+    tests/test_syncope.py::test_create_audit PASSED
+    tests/test_syncope.py::test_create_audit_false PASSED
+    tests/test_syncope.py::test_delete_audit PASSED
+    tests/test_syncope.py::test_delete_audit_false PASSED
+    tests/test_syncope.py::test_create_audit_raise PASSED
     ------------------------------------------------------ coverage: platform darwin, python 2.7.10-final-0 -------------------------------------------------------
     Name                  Stmts   Miss  Cover   Missing
     ---------------------------------------------------
-    syncope/__init__.py     190     39    79%
+    syncope/__init__.py     251     40    84%

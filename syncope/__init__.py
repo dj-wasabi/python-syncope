@@ -38,6 +38,7 @@ class Syncope(object):
         self.password = password
         self.timeout = int(timeout)
         self.rest_logging = 'syncope/cxf/logger/normal'
+        self.rest_log_audit = 'syncope/cxf/logger/audit'
         self.rest_audit = 'syncope/cxf/audit'
         self.rest_roles = 'syncope/cxf/roles'
         self.rest_users = 'syncope/cxf/users'
@@ -688,3 +689,64 @@ class Syncope(object):
             return True
         else:
             return False
+
+    def get_audit(self):
+        """Get information from all audit rules in JSON.
+
+        :return: False when something went wrong, or json data with all information from all log levels.
+        """
+        data = self._get(self.rest_log_audit)
+
+        if data.status_code == 200:
+            return data.json()
+        else:
+            return False
+
+    def create_audit(self, arguments=None):
+        """Will create an log level.
+
+        :param arguments: An JSON structure for creating the log level.
+        :type arguments: JSON
+        :return: False when something went wrong, or json data with all information from the just updated log level.
+        :Example:
+
+        >>> import syncope
+        >>> syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
+        >>> add_audit_rule = '{"type":"REST","category":"LoggerController","subcategory":null,"event":"listAudits","result":"SUCCESS"}'
+        >>> print syn.create_audit(add_audit_rule)
+        True
+        """
+        if arguments is None:
+            raise ValueError('This search needs JSON data to work!')
+
+        data = self._put("syncope/rest/logger/audit/enable", arguments)
+
+        if data.status_code == 200:
+            return True
+        else:
+            return False
+
+    def delete_audit(self, arguments=None):
+        """Will create an log level.
+
+        :param arguments: An JSON structure for creating the log level.
+        :type arguments: JSON
+        :return: False when something went wrong, or json data with all information from the just updated log level.
+        :Example:
+
+        >>> import syncope
+        >>> syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
+        >>> delete_audit_rule = '{"type":"REST","category":"LoggerController","subcategory":null,"event":"listAudits","result":"SUCCESS"}'
+        >>> print syn.delete_audit(delete_audit_rule)
+        True
+        """
+        if arguments is None:
+            raise ValueError('This search needs JSON data to work!')
+
+        data = self._put("syncope/rest/logger/audit/disable", arguments)
+
+        if data.status_code == 200:
+            return True
+        else:
+            return False
+

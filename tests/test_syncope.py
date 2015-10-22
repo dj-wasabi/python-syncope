@@ -572,4 +572,81 @@ def test_delete_log_level_by_name_raise():
     assert excinfo.value.message == 'This search needs log level name to work!'
 
 
+def test_get_audit():
+    """Will get all audit rules.
 
+    :return: Should return: 1
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+    audit_rules = syn.get_audit()
+    assert len(audit_rules) == 1
+
+
+def test_get_audit_false():
+    """Will get all audit rules (Wrong password).
+
+    :return: Should return: True
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="pasword")
+    assert syn.get_audit() == False
+
+
+def test_create_audit():
+    """Will create an audit rule.
+
+    :return: Should return: True
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+    add_audit_rule = '{"type":"REST","category":"LoggerController","subcategory":null,"event":"listAudits","result":"SUCCESS"}'
+    assert syn.create_audit(add_audit_rule) == True
+
+def test_create_audit_false():
+    """Will create an audit rule.
+
+    :return: Should return: False
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+    add_audit_rule = ''
+    assert syn.create_audit(add_audit_rule) == False
+
+
+def test_create_audit_raise():
+    """Will create an audit rule.
+
+    :return: Should catch the ValueError.
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+    with pytest.raises(ValueError) as excinfo:
+        syn.create_audit()
+    assert excinfo.value.message == 'This search needs JSON data to work!'
+
+
+def test_delete_audit():
+    """Will delete an audit rule.
+
+    :return: Should return: True
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+    delete_audit_rule = '{"type":"REST","category":"LoggerController","subcategory":null,"event":"listAudits","result":"SUCCESS"}'
+    assert syn.delete_audit(delete_audit_rule) == True
+
+
+def test_delete_audit_false():
+    """Will delete an audit rule.
+
+    :return: Should return: True
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+    delete_audit_rule = ''
+    assert syn.delete_audit(delete_audit_rule) == False
+
+
+def test_create_audit_raise():
+    """ Will test if an name is given as argument.
+
+    :return: Should catch the ValueError.
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+    with pytest.raises(ValueError) as excinfo:
+        syn.delete_audit()
+    assert excinfo.value.message == 'This search needs JSON data to work!'
