@@ -4,6 +4,11 @@ Below an overview of all changes in the releases.
 
 Version (Release date)
 
+0.0.4   (2015-??-??_
+
+  * Added log levels actions.
+
+
 0.0.3   (2015-10-20)
 
   * Renamed the functions:

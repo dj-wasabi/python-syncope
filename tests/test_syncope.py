@@ -436,3 +436,140 @@ def test_delete_role_raise():
     assert excinfo.value.message == 'This search needs an id to work!'
 
 
+def test_get_log_levels():
+    """Will test to get all log levels.
+
+    :return: Should return: 17
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+    roles_data = syn.get_log_levels()
+    assert len(roles_data) == 17
+
+
+def test_get_log_levels_false():
+    """Will test to get all log levels (Wrong password).
+
+    :return: Should return: False
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="passwrd")
+    roles_data = syn.get_log_levels()
+    assert roles_data == False
+
+
+def test_get_log_level_by_name():
+    """Will get all information from log level where name is "ROOT".
+
+    :return: Should return: "INFO"
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+    log_level = syn.get_log_level_by_name("ROOT")
+    log_level = log_level['level']
+    assert log_level == "INFO"
+
+
+def test_get_log_level_by_name_false():
+    """Will get all information from non existing log name.
+
+    :return: Should return: False
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+    log_level = syn.get_log_level_by_name("SYNCOPE")
+    assert log_level == False
+
+
+def test_get_log_level_by_name_raise():
+    """ Will test if an name is given as argument.
+
+    :return: Should catch the ValueError.
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+    with pytest.raises(ValueError) as excinfo:
+        syn.get_log_level_by_name()
+    assert excinfo.value.message == 'This search needs log level name to work!'
+
+
+def test_create_or_update_log_level_update():
+    """Will update the log level to "WARN".
+
+    :return: Should return: "WARN"
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+    update_log_level = '{"name": "org.apache.http", "level": "WARN"}'
+    log_level = syn.create_or_update_log_level(update_log_level)
+    assert log_level['level'] == "WARN"
+
+
+def test_create_or_update_log_level_create():
+    """Will create an new loglevel named 'SYNCOPE' with level 'WARN'.
+
+    :return: Should return: json string
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+    update_log_level = '{"name": "SYNCOPE", "level": "WARN"}'
+    log_level = syn.create_or_update_log_level(update_log_level)
+    assert log_level == {'level': 'WARN', 'name': 'SYNCOPE'}
+
+
+def test_create_or_update_log_level_false_empty():
+    """Will create an new log level, without JSON data.
+
+    :return: Should return: False
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+    update_log_level = '{}'
+    log_level = syn.create_or_update_log_level(update_log_level)
+    assert log_level == False
+
+
+def test_create_or_update_log_level_create_false():
+    """Will create an new loglevel named 'SYNCOPE' with level 'WARN' (Wrong password).
+
+    :return: Should return: False
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="pasword")
+    update_log_level = '{"name": "SYNCOPE", "level": "WARN"}'
+    log_level = syn.create_or_update_log_level(update_log_level)
+    assert log_level == False
+
+
+def test_create_or_update_log_level_raise():
+    """ Will test if an name is given as argument.
+
+    :return: Should catch the ValueError.
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+    with pytest.raises(ValueError) as excinfo:
+        syn.create_or_update_log_level()
+    assert excinfo.value.message == 'This search needs JSON data to work!'
+
+
+def test_delete_log_level_by_name():
+    """Will delete an log level with name "SYNCOPE".
+
+    :return: Should return: True
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+    assert syn.delete_log_level_by_name("SYNCOPE") == True
+
+
+def test_delete_log_level_by_name_false():
+    """Will delete an log level with non existing name "SYNCOPE_AGAIN".
+
+    :return: Should return: False
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+    assert syn.delete_log_level_by_name("SYNCOPE_AGAIN") == False
+
+
+def test_delete_log_level_by_name_raise():
+    """ Will test if an name is given as argument.
+
+    :return: Should catch the ValueError.
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+    with pytest.raises(ValueError) as excinfo:
+        syn.delete_log_level_by_name()
+    assert excinfo.value.message == 'This search needs log level name to work!'
+
+
+

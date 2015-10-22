@@ -2,11 +2,12 @@
 
 
 __author__ = 'Werner Dijkerman'
-__version__ = '0.0.3'
+__version__ = '0.0.4'
 __license__ = "Apache License 2.0"
 __email__ = "ikben@werner-dijkerman.nl"
 
 import requests
+import json
 
 
 class Syncope(object):
@@ -36,6 +37,8 @@ class Syncope(object):
         self.username = username
         self.password = password
         self.timeout = int(timeout)
+        self.rest_logging = 'syncope/cxf/logger/normal'
+        self.rest_audit = 'syncope/cxf/audit'
         self.rest_roles = 'syncope/cxf/roles'
         self.rest_users = 'syncope/cxf/users'
 
@@ -80,6 +83,23 @@ class Syncope(object):
             syncope_path = "{0}/{1}.json".format(self.syncope_url, rest_path)
 
         return requests.post(syncope_path, auth=(self.username, self.password), headers=self.headers, data=arguments, timeout=self.timeout)
+
+    def _put(self, rest_path, arguments=None, params=None):
+        """Will do an PUT action for creating or to update the information from the syncope server. This function will be called from the actual actions.
+
+        :param rest_path: uri of the rest action.
+        :param arguments: Optional arguments in JSON format.
+        :param params: Optional parameters to the uri, like: ?username=something.
+        :return: Returns the data in json (if any)from the POST request.
+        """
+        if arguments is None:
+            raise ValueError('No arguments are given to PUT.')
+        if params is not None:
+            syncope_path = "{0}/{1}.json{2}".format(self.syncope_url, rest_path, params)
+        else:
+            syncope_path = "{0}/{1}.json".format(self.syncope_url, rest_path)
+
+        return requests.put(syncope_path, auth=(self.username, self.password), headers=self.headers, data=arguments, timeout=self.timeout)
 
     def create_user(self, arguments):
         """Will create an user.
@@ -582,3 +602,89 @@ class Syncope(object):
         else:
             return False
 
+    def get_log_levels(self):
+        """Get information from all log levels in JSON.
+
+        :return: False when something went wrong, or json data with all information from all log levels.
+        """
+        data = self._get(self.rest_logging)
+
+        if data.status_code == 200:
+            return data.json()
+        else:
+            return False
+
+    def get_log_level_by_name(self, name=None):
+        """Get information from all log levels in JSON.
+
+        :param name: The name of the log level.
+        :type name: String
+        :return: False when something went wrong, or json data with information of the log level.
+        :Example:
+
+        >>> import syncope
+        >>> syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
+        >>> print syn.get_log_level_by_name("ROOT")
+        {u'name': u'ROOT', u'level': u'OFF'}
+        """
+        if name is None:
+            raise ValueError('This search needs log level name to work!')
+        data = self._get(self.rest_logging + "/" + name)
+
+        if data.status_code == 200:
+            return data.json()
+        else:
+            return False
+
+    def create_or_update_log_level(self, arguments=None):
+        """Will create an log level.
+
+        :param arguments: An JSON structure for creating the log level.
+        :type arguments: JSON
+        :return: False when something went wrong, or json data with all information from the just updated log level.
+        :Example:
+
+        >>> import syncope
+        >>> syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
+        >>> update_loglevel = '{"name": "ROOT", "level": "INFO"}'
+        >>> print syn.update_log_level(update_loglevel)
+        {u'name': u'ROOT', u'level': u'INFO'}
+        """
+        if arguments is None:
+            raise ValueError('This search needs JSON data to work!')
+
+        json_data = json.loads(arguments)
+        if json_data:
+            log_name = json_data['name']
+            log_level = json_data['level']
+        else:
+            return False
+
+        data = self._post("syncope/rest/logger/log/" + log_name + "/" + log_level, arguments)
+
+        if data.status_code == 200:
+            return data.json()
+        else:
+            return False
+
+    def delete_log_level_by_name(self, name=None):
+        """Get information from all log levels in JSON.
+
+        :param name: The name of the log level.
+        :type name: String
+        :return: False when something went wrong, or json data with information of the log level.
+        :Example:
+
+        >>> import syncope
+        >>> syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
+        >>> print syn.delete_log_level_by_name("SYNCOPE")
+        True
+        """
+        if name is None:
+            raise ValueError('This search needs log level name to work!')
+        data = self._delete(self.rest_logging + "/" + name)
+
+        if data.status_code == 204:
+            return True
+        else:
+            return False
