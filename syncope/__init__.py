@@ -616,7 +616,7 @@ class Syncope(object):
             return False
 
     def get_log_level_by_name(self, name=None):
-        """Get information from all log levels in JSON.
+        """Get information for specific log level.
 
         :param name: The name of the log level.
         :type name: String
@@ -638,9 +638,9 @@ class Syncope(object):
             return False
 
     def create_or_update_log_level(self, arguments=None):
-        """Will create an log level.
+        """Will create or update an log level.
 
-        :param arguments: An JSON structure for creating the log level.
+        :param arguments: An JSON structure for creating or updating the log level.
         :type arguments: JSON
         :return: False when something went wrong, or json data with all information from the just updated log level.
         :Example:
@@ -648,7 +648,7 @@ class Syncope(object):
         >>> import syncope
         >>> syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
         >>> update_loglevel = '{"name": "ROOT", "level": "INFO"}'
-        >>> print syn.update_log_level(update_loglevel)
+        >>> print syn.create_or_update_log_level(update_loglevel)
         {u'name': u'ROOT', u'level': u'INFO'}
         """
         if arguments is None:
@@ -669,11 +669,11 @@ class Syncope(object):
             return False
 
     def delete_log_level_by_name(self, name=None):
-        """Get information from all log levels in JSON.
+        """Will delete an log level by the name.
 
         :param name: The name of the log level.
         :type name: String
-        :return: False when something went wrong, or json data with information of the log level.
+        :return: False when something went wrong, or True when log level is deleted successfully.
         :Example:
 
         >>> import syncope
@@ -693,7 +693,7 @@ class Syncope(object):
     def get_audit(self):
         """Get information from all audit rules in JSON.
 
-        :return: False when something went wrong, or json data with all information from all log levels.
+        :return: False when something went wrong, or json data with information from all audit rule.
         """
         data = self._get(self.rest_log_audit)
 
@@ -705,9 +705,9 @@ class Syncope(object):
     def create_audit(self, arguments=None):
         """Will create an log level.
 
-        :param arguments: An JSON structure for creating the log level.
+        :param arguments: An JSON structure for creating the audit rule.
         :type arguments: JSON
-        :return: False when something went wrong, or json data with all information from the just updated log level.
+        :return: False when something went wrong, or True when audit rule is created.
         :Example:
 
         >>> import syncope
@@ -727,11 +727,11 @@ class Syncope(object):
             return False
 
     def delete_audit(self, arguments=None):
-        """Will create an log level.
+        """Will delete an audit rule.
 
-        :param arguments: An JSON structure for creating the log level.
+        :param arguments: An JSON structure for deleting the audit rule..
         :type arguments: JSON
-        :return: False when something went wrong, or json data with all information from the just updated log level.
+        :return: False when something went wrong, True when delete of audit rule is successful.
         :Example:
 
         >>> import syncope

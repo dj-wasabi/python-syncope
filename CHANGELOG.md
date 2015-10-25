@@ -4,10 +4,10 @@ Below an overview of all changes in the releases.
 
 Version (Release date)
 
-0.0.4   (2015-??-??_
+0.0.4   (2015-10-25)
 
   * Added log levels actions.
-
+  * Added audit rules.
 
 0.0.3   (2015-10-20)
 

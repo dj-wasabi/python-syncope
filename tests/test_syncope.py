@@ -600,6 +600,7 @@ def test_create_audit():
     add_audit_rule = '{"type":"REST","category":"LoggerController","subcategory":null,"event":"listAudits","result":"SUCCESS"}'
     assert syn.create_audit(add_audit_rule) == True
 
+
 def test_create_audit_false():
     """Will create an audit rule.
 
