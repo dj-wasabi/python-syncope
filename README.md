@@ -2,7 +2,7 @@ Work in progress
 =========
 
 [![Documentation Status](https://readthedocs.org/projects/python-syncope/badge/?version=latest)](http://python-syncope.readthedocs.org/en/latest/?badge=latest)
-[![Documentation Status](https://readthedocs.org/projects/python-syncope/badge/?version=0.0.3)](http://python-syncope.readthedocs.org/en/0.0.3/?badge=0.0.3)
+[![Documentation Status](https://readthedocs.org/projects/python-syncope/badge/?version=0.0.4)](http://python-syncope.readthedocs.org/en/0.0.4/?badge=0.0.4)
 
 ####Table of Contents
 1. [Overview](#overview)
