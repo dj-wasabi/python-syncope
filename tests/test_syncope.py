@@ -651,3 +651,24 @@ def test_create_audit_raise():
     with pytest.raises(ValueError) as excinfo:
         syn.delete_audit()
     assert excinfo.value.message == 'This search needs JSON data to work!'
+
+
+def test_get_resources():
+    """Will test to get all users.
+
+    :return: Should return: 5
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+    resource_data = syn.get_resources()
+    assert len(resource_data) == 18
+
+
+def test_get_resources_false():
+    """Will test to get all users (Wrong password).
+
+    :return: Should return: False
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="passwrd")
+    assert syn.get_resources() == False
+
+

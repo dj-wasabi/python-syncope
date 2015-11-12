@@ -2,7 +2,7 @@
 
 
 __author__ = 'Werner Dijkerman'
-__version__ = '0.0.4'
+__version__ = '0.0.5'
 __license__ = "Apache License 2.0"
 __email__ = "ikben@werner-dijkerman.nl"
 
@@ -40,6 +40,7 @@ class Syncope(object):
         self.rest_logging = 'syncope/cxf/logger/normal'
         self.rest_log_audit = 'syncope/cxf/logger/audit'
         self.rest_audit = 'syncope/cxf/audit'
+        self.rest_resources = 'syncope/cxf/resources'
         self.rest_roles = 'syncope/cxf/roles'
         self.rest_users = 'syncope/cxf/users'
 
@@ -749,4 +750,25 @@ class Syncope(object):
             return True
         else:
             return False
+
+    def get_resources(self):
+        """Will search an user and will return the data by pages.
+
+        :return: False when something went wrong, or json data with all information from all resources.
+        :Example:
+
+        >>> import syncope
+        >>> syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
+        >>> print syn.get_resources()
+        [{u'rmapping': None, u'randomPwdIfNotProvided': False, u'propagationPrimary': True, u'enforceMandatoryCondition': False <cut>
+        """
+        data = self._get(self.rest_resources)
+
+        if data.status_code == 200:
+            return data.json()
+        else:
+            return False
+
+
+
 
