@@ -37,9 +37,11 @@ class Syncope(object):
         self.username = username
         self.password = password
         self.timeout = int(timeout)
+        self.rest_configurations = 'syncope/cxf/configurations'
         self.rest_logging = 'syncope/cxf/logger/normal'
         self.rest_log_audit = 'syncope/cxf/logger/audit'
         self.rest_audit = 'syncope/cxf/audit'
+        self.rest_connectors = 'syncope/cxf/connectors'
         self.rest_resources = 'syncope/cxf/resources'
         self.rest_roles = 'syncope/cxf/roles'
         self.rest_users = 'syncope/cxf/users'
@@ -84,7 +86,12 @@ class Syncope(object):
         else:
             syncope_path = "{0}/{1}.json".format(self.syncope_url, rest_path)
 
-        return requests.post(syncope_path, auth=(self.username, self.password), headers=self.headers, data=arguments, timeout=self.timeout)
+        try:
+            data = requests.post(syncope_path, auth=(self.username, self.password), headers=self.headers, data=arguments, timeout=self.timeout)
+        except requests.exceptions.RequestException as e:
+            print e
+
+        return data
 
     def _put(self, rest_path, arguments=None, params=None):
         """Will do an PUT action for creating or to update the information from the syncope server. This function will be called from the actual actions.
@@ -730,7 +737,7 @@ class Syncope(object):
     def delete_audit(self, arguments=None):
         """Will delete an audit rule.
 
-        :param arguments: An JSON structure for deleting the audit rule..
+        :param arguments: An JSON structure for deleting the audit rule.
         :type arguments: JSON
         :return: False when something went wrong, True when delete of audit rule is successful.
         :Example:
@@ -751,24 +758,171 @@ class Syncope(object):
         else:
             return False
 
-    def get_resources(self):
-        """Will search an user and will return the data by pages.
+    def get_configurations(self):
+        """Will get all configured configuration options.
 
-        :return: False when something went wrong, or json data with all information from all resources.
+        :return: False when something went wrong, or json data with all information from all configurations.
         :Example:
 
         >>> import syncope
         >>> syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
-        >>> print syn.get_resources()
-        [{u'rmapping': None, u'randomPwdIfNotProvided': False, u'propagationPrimary': True, u'enforceMandatoryCondition': False <cut>
+        >>> print syn.get_configurations()
+        [{u'value': u'SHA1', u'key': u'password.cipher.algorithm'}, {u'value': u'not-existing', <cut>
         """
-        data = self._get(self.rest_resources)
+        data = self._get(self.rest_configurations)
 
         if data.status_code == 200:
             return data.json()
         else:
             return False
 
+    def get_configuration_by_key(self, key=None):
+        """Will get all configured configuration options.
 
+        :return: False when something went wrong, or json data with all information from all configurations.
+        :Example:
 
+        >>> import syncope
+        >>> syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
+        >>> print syn.get_configuration_by_key("password.cipher.algorithm")
+        {u'value': u'SHA1', u'key': u'password.cipher.algorithm'}
+        """
+        if key is None:
+            raise ValueError('This search needs an configuration key to work!')
+        data = self._get(self.rest_configurations + "/" + key)
 
+        if data.status_code == 200:
+            return data.json()
+        else:
+            return False
+
+    def create_configuration(self, arguments=None):
+        """Will create an log level.
+
+        :param arguments: An JSON structure for creating the audit rule.
+        :type arguments: JSON
+        :return: False when something went wrong, or True when audit rule is created.
+        :Example:
+
+        >>> import syncope
+        >>> syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
+        >>> add_configuration = '{"value": true, "key": "we.all.love.pizza"}'
+        >>> print syn.create_configuration(add_configuration)
+        True
+        """
+        if arguments is None:
+            raise ValueError('This search needs JSON data to work!')
+
+        data = self._post(self.rest_configurations, arguments)
+
+        if data.status_code == 201:
+            return True
+        else:
+            return False
+
+    def update_configuration(self, arguments=None):
+        """Will create an log level.
+
+        :param arguments: An JSON structure for creating the audit rule.
+        :type arguments: JSON
+        :return: False when something went wrong, or True when audit rule is created.
+        :Example:
+
+        >>> import syncope
+        >>> syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
+        >>> update_configuration = '{"value": false, "key": "we.all.love.pizza"}'
+        >>> print syn.update_configuration(update_configuration)
+        True
+        """
+        if arguments is None:
+            raise ValueError('This search needs JSON data to work!')
+
+        json_data = json.loads(arguments)
+        if "key" in json_data:
+            config_key = json_data['key']
+        else:
+            return False
+
+        data = self._put(self.rest_configurations + "/" + config_key, arguments)
+
+        if data.status_code == 204:
+            return True
+        else:
+            return False
+
+    def delete_configuration_by_key(self, key=None):
+        """Will create an log level.
+
+        :param key: An JSON structure for creating the audit rule.
+        :type key: JSON
+        :return: False when something went wrong, or True when audit rule is created.
+        :Example:
+
+        >>> import syncope
+        >>> syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
+        >>> print syn.delete_configuration_by_key("we.all.love.pizza")
+        True
+        """
+        if key is None:
+            raise ValueError('This search needs JSON data to work!')
+
+        data = self._delete(self.rest_configurations + "/" + key)
+
+        if data.status_code == 204:
+            return True
+        else:
+            return False
+
+    # def get_resources(self):
+    #     """Will search an user and will return the data by pages.
+    #
+    #     :return: False when something went wrong, or json data with all information from all resources.
+    #     :Example:
+    #
+    #     >>> import syncope
+    #     >>> syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
+    #     >>> print syn.get_resources()
+    #     [{u'rmapping': None, u'randomPwdIfNotProvided': False, u'propagationPrimary': True, u'enforceMandatoryCondition': False <cut>
+    #     """
+    #     data = self._get(self.rest_resources)
+    #
+    #     if data.status_code == 200:
+    #         return data.json()
+    #     else:
+    #         return False
+    #
+    # def create_resource(self, arguments=None):
+    #     """Will search an user and will return the data by pages.
+    #
+    #     :return: False when something went wrong, or json data with all information from all resources.
+    #     :Example:
+    #
+    #     >>> import syncope
+    #     >>> syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
+    #     >>> print syn.get_resources()
+    #     [{u'rmapping': None, u'randomPwdIfNotProvided': False, u'propagationPrimary': True, u'enforceMandatoryCondition': False <cut>
+    #     """
+    #     data = self._post(self.rest_resources, arguments)
+    #
+    #     if data.status_code == 200:
+    #         return data.json()
+    #     else:
+    #         return False
+    #
+    # def create_connector(self, arguments=None):
+    #     """Will search an user and will return the data by pages.
+    #
+    #     :return: False when something went wrong, or json data with all information from all resources.
+    #     :Example:
+    #
+    #     >>> import syncope
+    #     >>> syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
+    #     >>> print syn.get_resources()
+    #     [{u'rmapping': None, u'randomPwdIfNotProvided': False, u'propagationPrimary': True, u'enforceMandatoryCondition': False <cut>
+    #     """
+    #     data = self._post(self.rest_connectors, arguments)
+    #
+    #     if data.status_code == 200:
+    #         return data.json()
+    #     else:
+    #         return False

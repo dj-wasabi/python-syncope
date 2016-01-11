@@ -653,22 +653,176 @@ def test_create_audit_raise():
     assert excinfo.value.message == 'This search needs JSON data to work!'
 
 
-def test_get_resources():
-    """Will test to get all users.
+def test_get_configurations():
+    """Will test to get all configurations.
 
-    :return: Should return: 5
+    :return: Should return: 10
     """
     syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
-    resource_data = syn.get_resources()
-    assert len(resource_data) == 18
+    resource_data = syn.get_configurations()
+    assert len(resource_data) == 10
 
 
-def test_get_resources_false():
-    """Will test to get all users (Wrong password).
+def test_get_configurations_false():
+    """Will test to get all configurations (Wrong password).
 
     :return: Should return: False
     """
     syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="passwrd")
-    assert syn.get_resources() == False
+    assert syn.get_configurations() == False
+
+
+def test_get_configuration_by_key():
+    """Will test to get all configurations.
+
+    :return: Should return: 10
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+    resource_data = syn.get_configuration_by_key("password.cipher.algorithm")
+    assert resource_data == {'key': 'password.cipher.algorithm', 'value': 'SHA1'}
+
+
+def test_get_configuration_by_key_false():
+    """Will test to get all configurations (Wrong password).
+
+    :return: Should return: False
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="passwrd")
+    assert syn.get_configuration_by_key("password.cipher.algorithm") == False
+
+
+def test_get_configuration_by_key_raise():
+    """Will test to get all configurations (Wrong password).
+
+    :return: Should return: False
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+    with pytest.raises(ValueError) as excinfo:
+        syn.get_configuration_by_key()
+    assert excinfo.value.message == 'This search needs an configuration key to work!'
+
+
+def test_create_configuration():
+    """Will test to get all configurations.
+
+    :return: Should return: 10
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+    create_configuration = '{"key": "my.path", "value": "/opt/path"}'
+    resource_data = syn.create_configuration(create_configuration)
+    assert resource_data == True
+
+
+def test_create_configuration_false():
+    """Will test to get all configurations (Wrong password).
+
+    :return: Should return: False
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="passwrd")
+    create_configuration = '{"key": "my.path", "value": "/opt/path"}'
+    assert syn.create_configuration(create_configuration) == False
+
+
+def test_create_configuration_raise():
+    """Will test to get all configurations (Wrong password).
+
+    :return: Should return: False
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+    with pytest.raises(ValueError) as excinfo:
+        syn.create_configuration()
+    assert excinfo.value.message == 'This search needs JSON data to work!'
+
+
+def test_update_configuration():
+    """Will test to get all configurations.
+
+    :return: Should return: 10
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+    update_configuration = '{"key": "my.path", "value": "/opt/newpath"}'
+    resource_data = syn.update_configuration(update_configuration)
+    assert resource_data == True
+
+
+def test_update_configuration_false():
+    """Will test to get all configurations (Wrong password).
+
+    :return: Should return: False
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="passwrd")
+    update_configuration = '{"key": "my.path", "value": "/opt/newpath"}'
+    assert syn.update_configuration(update_configuration) == False
+
+
+def test_update_configuration_false_json():
+    """Will test to get all configurations (Wrong password).
+
+    :return: Should return: False
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="passwrd")
+    update_configuration = '{"keys": "my.path", "value": "/opt/newpath"}'
+    assert syn.update_configuration(update_configuration) == False
+
+
+def test_update_configuration_raise():
+    """Will test to get all configurations (Wrong password).
+
+    :return: Should return: False
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+    with pytest.raises(ValueError) as excinfo:
+        syn.update_configuration()
+    assert excinfo.value.message == 'This search needs JSON data to work!'
+
+
+def test_delete_configuration_by_key():
+    """Will test to get all configurations.
+
+    :return: Should return: 10
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+    resource_data = syn.delete_configuration_by_key("my.path")
+    assert resource_data == True
+
+
+def test_delete_configuration_by_key_false():
+    """Will test to get all configurations (Wrong password).
+
+    :return: Should return: False
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="passwrd")
+    assert syn.delete_configuration_by_key("my.path") == False
+
+
+def test_delete_configuration_by_key_raise():
+    """Will test to get all configurations (Wrong password).
+
+    :return: Should return: False
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+    with pytest.raises(ValueError) as excinfo:
+        syn.delete_configuration_by_key()
+    assert excinfo.value.message == 'This search needs JSON data to work!'
+
+
+
+# def test_get_resources():
+#     """Will test to get all users.
+#
+#     :return: Should return: 5
+#     """
+#     syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+#     resource_data = syn.get_resources()
+#     assert len(resource_data) == 18
+#
+#
+# def test_get_resources_false():
+#     """Will test to get all users (Wrong password).
+#
+#     :return: Should return: False
+#     """
+#     syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="passwrd")
+#     assert syn.get_resources() == False
 
 
