@@ -7,7 +7,7 @@ Version (Release date)
 0.0.5   (2016-01-??)
 
   * Added configuration actions
-
+  * Added Entitlements
 
 0.0.4   (2015-10-25)
 

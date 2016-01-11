@@ -23,7 +23,7 @@ Overview of the test results from the latest working version. Also the Test cove
 .. code-block:: bash
 
     plugins: cov-2.2.0
-    collected 59 items
+    collected 84 items
 
     tests/test_syncope.py::test___init__syncope_url PASSED
     tests/test_syncope.py::test___init__username PASSED
@@ -84,7 +84,32 @@ Overview of the test results from the latest working version. Also the Test cove
     tests/test_syncope.py::test_delete_audit PASSED
     tests/test_syncope.py::test_delete_audit_false PASSED
     tests/test_syncope.py::test_create_audit_raise PASSED
+    tests/test_syncope.py::test_get_configurations PASSED
+    tests/test_syncope.py::test_get_configurations_false PASSED
+    tests/test_syncope.py::test_get_configuration_by_key PASSED
+    tests/test_syncope.py::test_get_configuration_by_key_false PASSED
+    tests/test_syncope.py::test_get_configuration_by_key_raise PASSED
+    tests/test_syncope.py::test_create_configuration PASSED
+    tests/test_syncope.py::test_create_configuration_false PASSED
+    tests/test_syncope.py::test_create_configuration_raise PASSED
+    tests/test_syncope.py::test_update_configuration PASSED
+    tests/test_syncope.py::test_update_configuration_false PASSED
+    tests/test_syncope.py::test_update_configuration_false_json PASSED
+    tests/test_syncope.py::test_update_configuration_raise PASSED
+    tests/test_syncope.py::test_delete_configuration_by_key PASSED
+    tests/test_syncope.py::test_delete_configuration_by_key_false PASSED
+    tests/test_syncope.py::test_delete_configuration_by_key_raise PASSED
+    tests/test_syncope.py::test_get_configuration_validators PASSED
+    tests/test_syncope.py::test_get_configuration_validators_false PASSED
+    tests/test_syncope.py::test_get_configuration_mailtemplates PASSED
+    tests/test_syncope.py::test_get_configuration_mailtemplates_false PASSED
+    tests/test_syncope.py::test_get_configuration_stream PASSED
+    tests/test_syncope.py::test_get_configuration_stream_false PASSED
+    tests/test_syncope.py::test_get_entitlements PASSED
+    tests/test_syncope.py::test_get_entitlements_false PASSED
+    tests/test_syncope.py::test_get_own_entitlements PASSED
+    tests/test_syncope.py::test_get_own_entitlements_false PASSED
     ------------------------------------------------------ coverage: platform darwin, python 2.7.10-final-0 -------------------------------------------------------
     Name                  Stmts   Miss  Cover   Missing
     ---------------------------------------------------
-    syncope/__init__.py     251     40    84%
+    syncope/__init__.py     327     43    87%
