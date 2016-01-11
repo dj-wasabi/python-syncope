@@ -46,8 +46,10 @@ An overview of the components on which Syncope version is working.
 +---------------+---------------+---------------+
 | Configuration |      v        |       x       |
 +---------------+---------------+---------------+
+| Entitlements  |      v        |       x       |
++---------------+---------------+---------------+
 
-This module is sill Work In Progress, so if you miss an specific action it will come.
+This module is sill Work In Progress, so if you miss an specific action it will come. You could also help me by adding the actions yourself and creating an Pull Request.
 
 
 Installation

@@ -38,6 +38,7 @@ class Syncope(object):
         self.password = password
         self.timeout = int(timeout)
         self.rest_configurations = 'syncope/cxf/configurations'
+        self.rest_entitlements = 'syncope/cxf/entitlements'
         self.rest_logging = 'syncope/cxf/logger/normal'
         self.rest_log_audit = 'syncope/cxf/logger/audit'
         self.rest_audit = 'syncope/cxf/audit'
@@ -944,6 +945,42 @@ class Syncope(object):
 
         if data.status_code == 200:
             return data
+        else:
+            return False
+
+    def get_entitlements(self):
+        """Will return a list of all known entitlements.
+
+        :return: False when something went wrong, or json data with all know entitlements.
+        :Example:
+
+        >>> import syncope
+        >>> syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
+        >>> print syn.get_entitlements()
+        [{u'name': u'NOTIFICATION_UPDATE'}, {u'name': u'SCHEMA_CREATE'}, <cut>
+        """
+        data = self._get(self.rest_entitlements)
+
+        if data.status_code == 200:
+            return data.json()
+        else:
+            return False
+
+    def get_own_entitlements(self):
+        """Will return a list of all known entitlements.
+
+        :return: False when something went wrong, or json data with all know entitlements.
+        :Example:
+
+        >>> import syncope
+        >>> syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
+        >>> print syn.get_own_entitlements()
+        [{u'name': u'NOTIFICATION_UPDATE'}, {u'name': u'SCHEMA_CREATE'}, <cut>
+        """
+        data = self._get(self.rest_entitlements + "/own")
+
+        if data.status_code == 200:
+            return data.json()
         else:
             return False
 

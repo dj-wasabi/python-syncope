@@ -867,6 +867,44 @@ def test_get_configuration_stream_false():
     assert syn.get_configuration_stream() == False
 
 
+def test_get_entitlements():
+    """Will return a list of all known entitlements.
+
+    :return: Should return: dataset
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+    resource_data = syn.get_entitlements()
+    assert len(resource_data) == 84
+
+
+def test_get_entitlements_false():
+    """Will return a list of all known entitlements (Wrong password).
+
+    :return: Should return: False
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="passwrd")
+    assert syn.get_entitlements() == False
+
+
+def test_get_own_entitlements():
+    """Will return a list of all known entitlements.
+
+    :return: Should return: dataset
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+    resource_data = syn.get_own_entitlements()
+    assert len(resource_data) == 84
+
+
+def test_get_own_entitlements_false():
+    """Will return a list of all known entitlements (Wrong password).
+
+    :return: Should return: False
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="passwrd")
+    assert syn.get_own_entitlements() == False
+
+
 # def test_get_resources():
 #     """Will test to get all users.
 #
