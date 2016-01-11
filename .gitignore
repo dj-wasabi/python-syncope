@@ -26,3 +26,9 @@ __pycache__
 # build dir
 docs/_build
 docs/generated
+
+# Everything else
+.coverage
+con.json
+test.py
+tmp.json

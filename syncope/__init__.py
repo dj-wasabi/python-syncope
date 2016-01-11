@@ -777,9 +777,11 @@ class Syncope(object):
             return False
 
     def get_configuration_by_key(self, key=None):
-        """Will get all configured configuration options.
+        """Will get the info for specific configuration key.
 
-        :return: False when something went wrong, or json data with all information from all configurations.
+        :param key: The "key" name of the configuration item.
+        :type key: String
+        :return: False when something went wrong, or json data with all information from the configuration.
         :Example:
 
         >>> import syncope
@@ -797,11 +799,11 @@ class Syncope(object):
             return False
 
     def create_configuration(self, arguments=None):
-        """Will create an log level.
+        """Will create an configuration item.
 
-        :param arguments: An JSON structure for creating the audit rule.
+        :param arguments: An JSON structure for creating the configuration.
         :type arguments: JSON
-        :return: False when something went wrong, or True when audit rule is created.
+        :return: False when something went wrong, or True when configuration is created.
         :Example:
 
         >>> import syncope
@@ -821,11 +823,11 @@ class Syncope(object):
             return False
 
     def update_configuration(self, arguments=None):
-        """Will create an log level.
+        """Will update the configuration.
 
-        :param arguments: An JSON structure for creating the audit rule.
+        :param arguments: An JSON structure for updating the configuration.
         :type arguments: JSON
-        :return: False when something went wrong, or True when audit rule is created.
+        :return: False when something went wrong, or True when the configuration is updated.
         :Example:
 
         >>> import syncope
@@ -851,11 +853,11 @@ class Syncope(object):
             return False
 
     def delete_configuration_by_key(self, key=None):
-        """Will create an log level.
+        """Will delete an configuration item..
 
-        :param key: An JSON structure for creating the audit rule.
+        :param key: The "key" name of the configuration item.
         :type key: JSON
-        :return: False when something went wrong, or True when audit rule is created.
+        :return: False when something went wrong, or True when configuration is deleted.
         :Example:
 
         >>> import syncope

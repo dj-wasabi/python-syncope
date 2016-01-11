@@ -673,9 +673,9 @@ def test_get_configurations_false():
 
 
 def test_get_configuration_by_key():
-    """Will test to get all configurations.
+    """Will test to get all configuration by key.
 
-    :return: Should return: 10
+    :return: Should return: {'key': 'password.cipher.algorithm', 'value': 'SHA1'}
     """
     syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
     resource_data = syn.get_configuration_by_key("password.cipher.algorithm")
@@ -683,7 +683,7 @@ def test_get_configuration_by_key():
 
 
 def test_get_configuration_by_key_false():
-    """Will test to get all configurations (Wrong password).
+    """Will test to get configuration by key (Wrong password).
 
     :return: Should return: False
     """
@@ -692,9 +692,9 @@ def test_get_configuration_by_key_false():
 
 
 def test_get_configuration_by_key_raise():
-    """Will test to get all configurations (Wrong password).
+    """Will test to get configuration by key without key.
 
-    :return: Should return: False
+    :return: Should catch the ValueError.
     """
     syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
     with pytest.raises(ValueError) as excinfo:
@@ -703,9 +703,9 @@ def test_get_configuration_by_key_raise():
 
 
 def test_create_configuration():
-    """Will test to get all configurations.
+    """Will create an configuration.
 
-    :return: Should return: 10
+    :return: Should return: True
     """
     syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
     create_configuration = '{"key": "my.path", "value": "/opt/path"}'
@@ -714,7 +714,7 @@ def test_create_configuration():
 
 
 def test_create_configuration_false():
-    """Will test to get all configurations (Wrong password).
+    """Will create an configuration (Wrong password).
 
     :return: Should return: False
     """
@@ -724,9 +724,9 @@ def test_create_configuration_false():
 
 
 def test_create_configuration_raise():
-    """Will test to get all configurations (Wrong password).
+    """Will create an configuration without json data.
 
-    :return: Should return: False
+    :return: Should catch the ValueError.
     """
     syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
     with pytest.raises(ValueError) as excinfo:
@@ -735,9 +735,9 @@ def test_create_configuration_raise():
 
 
 def test_update_configuration():
-    """Will test to get all configurations.
+    """Will update the configuration.
 
-    :return: Should return: 10
+    :return: Should return: True
     """
     syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
     update_configuration = '{"key": "my.path", "value": "/opt/newpath"}'
@@ -746,7 +746,7 @@ def test_update_configuration():
 
 
 def test_update_configuration_false():
-    """Will test to get all configurations (Wrong password).
+    """Will update the configuration (Wrong password).
 
     :return: Should return: False
     """
@@ -756,17 +756,17 @@ def test_update_configuration_false():
 
 
 def test_update_configuration_false_json():
-    """Will test to get all configurations (Wrong password).
+    """Will update the configuration, with "faulty" json data.
 
     :return: Should return: False
     """
     syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="passwrd")
-    update_configuration = '{"keys": "my.path", "value": "/opt/newpath"}'
+    update_configuration = '{"keys": "my.path", "values": "/opt/newpath"}'
     assert syn.update_configuration(update_configuration) == False
 
 
 def test_update_configuration_raise():
-    """Will test to get all configurations (Wrong password).
+    """Will update the configuration, without json data.
 
     :return: Should return: False
     """
@@ -777,9 +777,9 @@ def test_update_configuration_raise():
 
 
 def test_delete_configuration_by_key():
-    """Will test to get all configurations.
+    """Will delete an configuration.
 
-    :return: Should return: 10
+    :return: Should return: true
     """
     syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
     resource_data = syn.delete_configuration_by_key("my.path")
@@ -787,7 +787,7 @@ def test_delete_configuration_by_key():
 
 
 def test_delete_configuration_by_key_false():
-    """Will test to get all configurations (Wrong password).
+    """Will delete an configuration (Wrong password).
 
     :return: Should return: False
     """
@@ -796,9 +796,9 @@ def test_delete_configuration_by_key_false():
 
 
 def test_delete_configuration_by_key_raise():
-    """Will test to get all configurations (Wrong password).
+    """Will delete an configuration without key name.
 
-    :return: Should return: False
+    :return: Should catch the ValueError.
     """
     syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
     with pytest.raises(ValueError) as excinfo:
