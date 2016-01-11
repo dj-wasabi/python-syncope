@@ -1,7 +1,10 @@
 """Test script for python-syncope"""
+
 import sys
 import os
 import pytest
+import xml.etree.ElementTree as ET
+
 my_path = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, my_path + '/../')
 
@@ -805,6 +808,63 @@ def test_delete_configuration_by_key_raise():
         syn.delete_configuration_by_key()
     assert excinfo.value.message == 'This search needs JSON data to work!'
 
+
+def test_get_configuration_validators():
+    """Will test to get all configuration validators.
+
+    :return: Should return: 10
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+    resource_data = syn.get_configuration_validators()
+    assert len(resource_data) == 3
+
+
+def test_get_configuration_validators_false():
+    """Will test to get all configuration validators (Wrong password).
+
+    :return: Should return: False
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="passwrd")
+    assert syn.get_configuration_validators() == False
+
+
+def test_get_configuration_mailtemplates():
+    """Will test to get all mailtemplates.
+
+    :return: Should return: 1
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+    resource_data = syn.get_configuration_mailtemplates()
+    assert len(resource_data) == 1
+
+
+def test_get_configuration_mailtemplates_false():
+    """Will test to get all mailtemplates (Wrong password).
+
+    :return: Should return: False
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="passwrd")
+    assert syn.get_configuration_mailtemplates() == False
+
+
+def test_get_configuration_stream():
+    """Will test to get configuration stream.
+
+    :return: Should return: dataset
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+    resource_data = syn.get_configuration_stream()
+    tree = ET.fromstring(resource_data.text)
+    assert tree.tag == "dataset"
+
+
+def test_get_configuration_stream_false():
+    """Will test to get configuration stream (Wrong password).
+
+    :return: Should return: False
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="passwrd")
+    assert syn.get_configuration_stream() == False
 
 
 # def test_get_resources():

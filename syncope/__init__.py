@@ -60,6 +60,21 @@ class Syncope(object):
 
         return requests.get(syncope_path, auth=(self.username, self.password), headers=self.headers, timeout=self.timeout)
 
+    def _get_xml(self, rest_path, arguments=None):
+        """Will GET the information from the syncope server with XML. This function will be called from the actual actions.
+
+        :param rest_path: uri of the rest action.
+        :param arguments: Optional arguments.
+        :return: Returns the data in XML from the GET request.
+        """
+        headers = {'Content-Type': 'application/xml'}
+        if arguments is not None:
+            syncope_path = "{0}/{1}{2}".format(self.syncope_url, rest_path, arguments)
+        else:
+            syncope_path = "{0}/{1}".format(self.syncope_url, rest_path)
+
+        return requests.get(syncope_path, auth=(self.username, self.password), headers=headers, timeout=self.timeout)
+
     def _delete(self, rest_path, arguments=None):
         """Will DELETE the information from the syncope server. This function will be called from the actual actions.
 
@@ -872,6 +887,63 @@ class Syncope(object):
 
         if data.status_code == 204:
             return True
+        else:
+            return False
+
+    def get_configuration_validators(self):
+        """Will get the info for the configuration validators.
+
+        :return: False when something went wrong, or json data with all information from the validators.
+        :Example:
+
+        >>> import syncope
+        >>> syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
+        >>> print syn.get_configuration_validators()
+        [{u'name': u'org.apache.syncope.core.persistence.validation.attrvalue.AlwaysTrueValidator'}, <cut>
+        """
+        data = self._get(self.rest_configurations + "/validators")
+
+        if data.status_code == 200:
+            return data.json()
+        else:
+            return False
+
+    def get_configuration_mailtemplates(self):
+        """Will get the info for the mailtemplates.
+
+        :return: False when something went wrong, or json data with all information about the mailtemplates.
+        :Example:
+
+        >>> import syncope
+        >>> syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
+        >>> print syn.get_configuration_mailtemplates()
+        [{u'name': u'optin'}]
+        """
+        data = self._get(self.rest_configurations + "/mailTemplates")
+
+        if data.status_code == 200:
+            return data.json()
+        else:
+            return False
+
+    def get_configuration_stream(self):
+        """Returns configuration as an downloadable content.xml database export file.
+
+        :return: False when something went wrong, or XML data.
+
+        >>> import xml.etree.ElementTree as ET
+        >>> import syncope
+
+        >>> syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
+        >>> response = syn.get_configuration_stream()
+        >>> tree = ET.parse(response.text)
+        >>> root = tree.getroot()
+        >>> print tree
+        """
+        data = self._get_xml(self.rest_configurations + "/stream")
+
+        if data.status_code == 200:
+            return data
         else:
             return False
 
