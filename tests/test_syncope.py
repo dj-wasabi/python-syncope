@@ -889,7 +889,7 @@ def test_get_entitlements_false():
 def test_get_own_entitlements():
     """Will return a list of all known entitlements.
 
-    :return: Should return: dataset
+    :return: Should return: 84
     """
     syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
     resource_data = syn.get_own_entitlements()
@@ -903,6 +903,164 @@ def test_get_own_entitlements_false():
     """
     syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="passwrd")
     assert syn.get_own_entitlements() == False
+
+
+def test_get_notifications():
+    """Will return a list of all notifications.
+
+    :return: Should return: 1
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+    notification_data = syn.get_notifications()
+    assert len(notification_data) == 1
+
+
+def test_get_notifications_false():
+    """Will return a list of all notifications (Wrong password).
+
+    :return: Should return: False
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="passwrd")
+    assert syn.get_notifications() == False
+
+
+def test_get_notification_by_id():
+    """Will return information for notifications with id.
+
+    :return: Should return: 1
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+    notification_data = syn.get_notification_by_id(1)
+    assert len(notification_data) == 11
+
+
+def test_get_notification_by_id_false():
+    """Will return information for notifications with id (Wrong password).
+
+    :return: Should return: False
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="passwrd")
+    assert syn.get_notification_by_id(1) == False
+
+
+def test_get_notification_by_id_raise():
+    """Will return information for notifications with id.
+
+    :return: Should catch the ValueError.
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+    with pytest.raises(ValueError) as excinfo:
+        syn.get_notification_by_id()
+    assert excinfo.value.message == 'This search needs an id to work!'
+
+
+def test_create_notification():
+    """Will create an notification
+
+    :return: Should return: True
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+    create_notification = '{"events":["[REST]:[LoggerController]:[]:[deleteLog]:[SUCCESS]","[REST]:[LoggerController]:[]:[disableAudit]:[SUCCESS]"],"recipientAttrType":"Username","recipientAttrName":"Username","selfAsRecipient":true,"sender":"me@home.nl","subject":"this is very important","template":"optin","traceLevel":"FAILURES"}'
+    notification_data = syn.create_notification(create_notification)
+    assert notification_data == True
+
+
+def test_create_notification_false():
+    """Will create an notification (Wrong password).
+
+    :return: Should return: False
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="passwrd")
+    create_notification = '{"events":["[REST]:[LoggerController]:[]:[deleteLog]:[SUCCESS]","[REST]:[LoggerController]:[]:[disableAudit]:[SUCCESS]"],"recipientAttrType":"Username","recipientAttrName":"Username","selfAsRecipient":true,"sender":"me@home.nl","subject":"this is very important","template":"optin","traceLevel":"FAILURES"}'
+    notification_data = syn.create_notification(create_notification)
+    assert notification_data == False
+
+
+def test_create_notification_raise():
+    """Will return information for notifications with id.
+
+    :return: Should catch the ValueError.
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+    with pytest.raises(ValueError) as excinfo:
+        syn.create_notification()
+    assert excinfo.value.message == 'This search needs an JSON to work!'
+
+
+def test_update_notification_by_id():
+    """Will update an notification
+
+    :return: Should return: True
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+    # Get latest notification_id
+    notifications_list = []
+    for notification in syn.get_notifications():
+        notifications_list.append(notification['id'])
+    notifications_list.reverse()
+    notifications_id =  notifications_list[0]
+    update_notification = '{"id":' + str(notifications_id) + ',"events":["[REST]:[LoggerController]:[]:[deleteLog]:[SUCCESS]"],"about":null,"recipients":null,"recipientAttrType":"Username","recipientAttrName":"Username","selfAsRecipient":true,"sender":"me@home.nl","subject":"this is very important again","template":"optin","traceLevel":"FAILURES"}'
+    notification_data = syn.update_notification_by_id(update_notification)
+    assert notification_data == True
+
+
+def test_update_notification_by_id_false():
+    """Will update an notification (Wrong password).
+
+    :return: Should return: False
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="passwrd")
+    create_notification = '{"events":["[REST]:[LoggerController]:[]:[deleteLog]:[SUCCESS]","[REST]:[LoggerController]:[]:[disableAudit]:[SUCCESS]"],"recipientAttrType":"Username","recipientAttrName":"Username","selfAsRecipient":true,"sender":"me@home.nl","subject":"this is very important","template":"optin","traceLevel":"FAILURES"}'
+    notification_data = syn.update_notification_by_id(create_notification)
+    assert notification_data == False
+
+
+def test_update_notification_by_id_raise():
+    """Will update information for notifications with id.
+
+    :return: Should catch the ValueError.
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+    with pytest.raises(ValueError) as excinfo:
+        syn.update_notification_by_id()
+    assert excinfo.value.message == 'This search needs an JSON to work!'
+
+
+def test_datele_notification_by_id():
+    """Will delete an notification
+
+    :return: Should return: True
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+    # Get latest notification_id
+    notifications_list = []
+    for notification in syn.get_notifications():
+        notifications_list.append(notification['id'])
+    notifications_list.reverse()
+    notifications_id =  notifications_list[0]
+    notification_data = syn.delete_notification_by_id(notifications_id)
+    assert notification_data == True
+
+
+def test_delete_notification_by_id_false():
+    """Will delete an notification (Wrong password).
+
+    :return: Should return: False
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="passwrd")
+    notification_data = syn.delete_notification_by_id(101)
+    assert notification_data == False
+
+
+def test_delete_notification_by_id_raise():
+    """Will delete information for notifications with id.
+
+    :return: Should catch the ValueError.
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+    with pytest.raises(ValueError) as excinfo:
+        syn.delete_notification_by_id()
+    assert excinfo.value.message == 'This search needs an JSON to work!'
 
 
 # def test_get_resources():

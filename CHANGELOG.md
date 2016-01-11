@@ -4,6 +4,10 @@ Below an overview of all changes in the releases.
 
 Version (Release date)
 
+0.0.6   (2016-??-??)
+
+  * Added Notifications
+
 0.0.5   (2016-01-11)
 
   * Added configuration actions

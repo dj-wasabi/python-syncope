@@ -2,7 +2,7 @@
 
 
 __author__ = 'Werner Dijkerman'
-__version__ = '0.0.5'
+__version__ = '0.0.6'
 __license__ = "Apache License 2.0"
 __email__ = "ikben@werner-dijkerman.nl"
 
@@ -41,6 +41,7 @@ class Syncope(object):
         self.rest_entitlements = 'syncope/cxf/entitlements'
         self.rest_logging = 'syncope/cxf/logger/normal'
         self.rest_log_audit = 'syncope/cxf/logger/audit'
+        self.rest_notifications = 'syncope/cxf/notifications'
         self.rest_audit = 'syncope/cxf/audit'
         self.rest_connectors = 'syncope/cxf/connectors'
         self.rest_resources = 'syncope/cxf/resources'
@@ -279,7 +280,7 @@ class Syncope(object):
         {u'status': u'active', u'username': u'vivaldi', <cut>}
         """
         if arguments is None:
-            raise ValueError('This search needs an dict to work!')
+            raise ValueError('This search needs an JSON to work!')
         if page is None:
             raise ValueError('This search needs an page to work!')
         if size is None:
@@ -981,6 +982,114 @@ class Syncope(object):
 
         if data.status_code == 200:
             return data.json()
+        else:
+            return False
+
+    def get_notifications(self):
+        """Will return a list of all notifications.
+
+        :return: False when something went wrong, or json data with all notifications.
+        :Example:
+
+        >>> import syncope
+        >>> syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
+        >>> print syn.get_notifications()
+        [{u'recipientAttrType': u'UserSchema', u'about': {u'membershipCond': None, <cut>
+        """
+        data = self._get(self.rest_notifications)
+
+        if data.status_code == 200:
+            return data.json()
+        else:
+            return False
+
+    def get_notification_by_id(self, id=None):
+        """Will return information for notification by id.
+
+        :param id: The notification ID.
+        :type id: Int.
+        :return: False when something went wrong, or json data with all notifications.
+        :Example:
+
+        >>> import syncope
+        >>> syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
+        >>> print syn.get_notification_by_id(1)
+        [{u'recipientAttrType': u'UserSchema', u'about': {u'membershipCond': None, <cut>
+        """
+        if id is None:
+            raise ValueError('This search needs an id to work!')
+        data = self._get(self.rest_notifications + "/" + str(id))
+
+        if data.status_code == 200:
+            return data.json()
+        else:
+            return False
+
+    def create_notification(self, arguments=None):
+        """Get create an notification.
+
+        :param arguments: An JSON structure for creating the notification.
+        :type arguments: JSON
+        :return: False when something went wrong, or True when created successfully.
+        :Example:
+
+        >>> import syncope
+        >>> syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
+        >>> create_notification = '{"events":["[REST]:[LoggerController]:[]:[deleteLog]:[SUCCESS]","[REST]:[LoggerController]:[]:[disableAudit]:[SUCCESS]"],"recipientAttrType":"Username","recipientAttrName":"Username","selfAsRecipient":true,"sender":"me@home.nl","subject":"this is something very important","template":"optin","traceLevel":"FAILURES"}'
+        >>> print syn.create_notification(create_notification)
+        True
+        """
+        if arguments is None:
+            raise ValueError('This search needs an JSON to work!')
+        data = self._post(self.rest_notifications, arguments)
+
+        if data.status_code == 201:
+            return True
+        else:
+            return False
+
+    def update_notification_by_id(self, arguments=None):
+        """Get information for specific log level.
+
+        :param arguments: An JSON structure for updating the notification.
+        :type arguments: JSON
+        :return: False when something went wrong, or True when updated successfully.
+        :Example:
+
+        >>> import syncope
+        >>> syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
+        >>> update_notification = '{"id":104,"events":["[REST]:[LoggerController]:[]:[deleteLog]:[SUCCESS]"],"about":null,"recipients":null,"recipientAttrType":"Username","recipientAttrName":"Username","selfAsRecipient":true,"sender":"me@home.nl","subject":"this is something very important","template":"optin","traceLevel":"FAILURES"}'
+        >>> print syn.update_notification_by_id(update_notification)
+        True
+        """
+        if arguments is None:
+            raise ValueError('This search needs an JSON to work!')
+        data = self._post("syncope/rest/notification/update", arguments)
+
+        if data.status_code == 200:
+            return True
+        else:
+            return False
+
+    def delete_notification_by_id(self, id=None):
+        """Get information for specific log level.
+
+        :param name: The id for the notification.
+        :type name: Int
+        :return: False when something went wrong, or True when deleted successfully.
+        :Example:
+
+        >>> import syncope
+        >>> syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
+        >>> print syn.delete_notification_by_id(104)
+        True
+        """
+        if id is None:
+            raise ValueError('This search needs an JSON to work!')
+        data = self._delete(self.rest_notifications + "/" + str(id))
+
+        if data.status_code == 204:
+            return True
         else:
             return False
 

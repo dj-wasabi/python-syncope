@@ -23,7 +23,7 @@ Overview of the test results from the latest working version. Also the Test cove
 .. code-block:: bash
 
     plugins: cov-2.2.0
-    collected 84 items
+    collected 98 items
 
     tests/test_syncope.py::test___init__syncope_url PASSED
     tests/test_syncope.py::test___init__username PASSED
@@ -109,7 +109,21 @@ Overview of the test results from the latest working version. Also the Test cove
     tests/test_syncope.py::test_get_entitlements_false PASSED
     tests/test_syncope.py::test_get_own_entitlements PASSED
     tests/test_syncope.py::test_get_own_entitlements_false PASSED
+    tests/test_syncope.py::test_get_notifications PASSED
+    tests/test_syncope.py::test_get_notifications_false PASSED
+    tests/test_syncope.py::test_get_notification_by_id PASSED
+    tests/test_syncope.py::test_get_notification_by_id_false PASSED
+    tests/test_syncope.py::test_get_notification_by_id_raise PASSED
+    tests/test_syncope.py::test_create_notification PASSED
+    tests/test_syncope.py::test_create_notification_false PASSED
+    tests/test_syncope.py::test_create_notification_raise PASSED
+    tests/test_syncope.py::test_update_notification_by_id PASSED
+    tests/test_syncope.py::test_update_notification_by_id_false PASSED
+    tests/test_syncope.py::test_update_notification_by_id_raise PASSED
+    tests/test_syncope.py::test_datele_notification_by_id PASSED
+    tests/test_syncope.py::test_delete_notification_by_id_false PASSED
+    tests/test_syncope.py::test_delete_notification_by_id_raise PASSED
     ------------------------------------------------------ coverage: platform darwin, python 2.7.10-final-0 -------------------------------------------------------
     Name                  Stmts   Miss  Cover   Missing
     ---------------------------------------------------
-    syncope/__init__.py     327     43    87%
+    syncope/__init__.py     361     43    88%
