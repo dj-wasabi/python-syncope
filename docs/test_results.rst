@@ -23,7 +23,7 @@ Overview of the test results from the latest working version. Also the Test cove
 .. code-block:: bash
 
     plugins: cov-2.2.0
-    collected 98 items
+    collected 140 items
 
     tests/test_syncope.py::test___init__syncope_url PASSED
     tests/test_syncope.py::test___init__username PASSED
@@ -123,7 +123,49 @@ Overview of the test results from the latest working version. Also the Test cove
     tests/test_syncope.py::test_datele_notification_by_id PASSED
     tests/test_syncope.py::test_delete_notification_by_id_false PASSED
     tests/test_syncope.py::test_delete_notification_by_id_raise PASSED
+    tests/test_syncope.py::test_get_account_policies PASSED
+    tests/test_syncope.py::test_get_account_policies_false PASSED
+    tests/test_syncope.py::test_get_account_policy_by_id PASSED
+    tests/test_syncope.py::test_get_account_policy_by_id_false PASSED
+    tests/test_syncope.py::test_get_account_policy_by_id_raise PASSED
+    tests/test_syncope.py::test_create_account_policy PASSED
+    tests/test_syncope.py::test_create_account_policy_false PASSED
+    tests/test_syncope.py::test_create_account_policy_raise PASSED
+    tests/test_syncope.py::test_update_account_policy PASSED
+    tests/test_syncope.py::test_update_account_policy_false PASSED
+    tests/test_syncope.py::test_update_account_policy_raise PASSED
+    tests/test_syncope.py::test_delete_account_policy PASSED
+    tests/test_syncope.py::test_delete_account_policy_false PASSED
+    tests/test_syncope.py::test_delete_account_policy_raise PASSED
+    tests/test_syncope.py::test_get_sync_policies PASSED
+    tests/test_syncope.py::test_get_sync_policies_false PASSED
+    tests/test_syncope.py::test_get_sync_policy_by_id PASSED
+    tests/test_syncope.py::test_get_sync_policy_by_id_false PASSED
+    tests/test_syncope.py::test_get_sync_policy_by_id_raise PASSED
+    tests/test_syncope.py::test_create_sync_policy PASSED
+    tests/test_syncope.py::test_create_sync_policy_false PASSED
+    tests/test_syncope.py::test_create_sync_policy_raise PASSED
+    tests/test_syncope.py::test_update_sync_policy PASSED
+    tests/test_syncope.py::test_update_sync_policy_false PASSED
+    tests/test_syncope.py::test_update_sync_policy_raise PASSED
+    tests/test_syncope.py::test_delete_sync_policy PASSED
+    tests/test_syncope.py::test_delete_sync_policy_false PASSED
+    tests/test_syncope.py::test_delete_sync_policy_raise PASSED
+    tests/test_syncope.py::test_get_password_policies PASSED
+    tests/test_syncope.py::test_get_password_policies_false PASSED
+    tests/test_syncope.py::test_get_password_policy_by_id PASSED
+    tests/test_syncope.py::test_get_password_policy_by_id_false PASSED
+    tests/test_syncope.py::test_get_password_policy_by_id_raise PASSED
+    tests/test_syncope.py::test_create_password_policy PASSED
+    tests/test_syncope.py::test_create_password_policy_false PASSED
+    tests/test_syncope.py::test_create_password_policy_raise PASSED
+    tests/test_syncope.py::test_update_password_policy PASSED
+    tests/test_syncope.py::test_update_password_policy_false PASSED
+    tests/test_syncope.py::test_update_password_policy_raise PASSED
+    tests/test_syncope.py::test_delete_password_policy PASSED
+    tests/test_syncope.py::test_delete_password_policy_false PASSED
+    tests/test_syncope.py::test_delete_password_policy_raise PASSED
     ------------------------------------------------------ coverage: platform darwin, python 2.7.10-final-0 -------------------------------------------------------
     Name                  Stmts   Miss  Cover   Missing
     ---------------------------------------------------
-    syncope/__init__.py     361     43    88%
+    syncope/__init__.py     466     43    91%

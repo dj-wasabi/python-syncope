@@ -38,6 +38,12 @@ class Syncope(object):
         self.password = password
         self.timeout = int(timeout)
         self.rest_configurations = 'syncope/cxf/configurations'
+        self.cxf_account_policies = 'syncope/cxf/policies/account'
+        self.cxf_sync_policies = 'syncope/cxf/policies/sync'
+        self.cxf_password_policies = 'syncope/cxf/policies/password'
+        self.rest_account_policies = 'syncope/rest/policy/account'
+        self.rest_sync_policies = 'syncope/rest/policy/sync'
+        self.rest_password_policies = 'syncope/rest/policy/password'
         self.rest_entitlements = 'syncope/cxf/entitlements'
         self.rest_logging = 'syncope/cxf/logger/normal'
         self.rest_log_audit = 'syncope/cxf/logger/audit'
@@ -1092,6 +1098,325 @@ class Syncope(object):
             return True
         else:
             return False
+
+    def get_account_policies(self):
+        """Will return a list of account policies.
+
+        :return: False when something went wrong, or json data with all account policies.
+        :Example:
+
+        >>> import syncope
+        >>> syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
+        >>> print syn.get_account_policies()
+        [{u'usedByResources': [], u'description': u'sample account policy', <cut>
+        """
+        data = self._get(self.cxf_account_policies)
+
+        if data.status_code == 200:
+            return data.json()
+        else:
+            return False
+
+    def get_account_policy_by_id(self, id=None):
+        """Will return information with account policy for id.
+
+        :return: False when something went wrong, or json data with information for account policie.
+        :Example:
+
+        >>> import syncope
+        >>> syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
+        >>> print syn.get_account_policy_by_id(5)
+        {u'usedByResources': [u'ws-target-resource-1', u'ws-target-resource-2', u'ws-target-resource-timeout', <cut>
+        """
+        if id is None:
+            raise ValueError('This needs an ID to work!')
+        data = self._get(self.cxf_account_policies + "/" + str(id))
+
+        if data.status_code == 200:
+            return data.json()
+        else:
+            return False
+
+    def create_account_policy(self, arguments=None):
+        """Will create an account policy.
+
+        :param arguments: An JSON structure for creating the account policy.
+        :type arguments: JSON
+        :return: False when something went wrong, or JSON data when created successfully.
+        :Example:
+
+        >>> import syncope
+        >>> syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
+        >>> create_account_policy = '{"description":"My Description","type":"ACCOUNT","usedByResources":[],"usedByRoles":[],"specification":{"maxLength":0,"minLength":0,"pattern":null,"wordsNotPermitted":[],"schemasNotPermitted":["firstname","email"],"prefixesNotPermitted":[],"suffixesNotPermitted":[],"allUpperCase":false,"allLowerCase":false,"propagateSuspension":false,"permittedLoginRetries":0}}'
+        >>> print syn.create_account_policy(create_account_policy)
+        {u'usedByResources': [], u'description': u'My Description', u'specification': { <cut>
+        """
+        if arguments is None:
+            raise ValueError('This create needs an JSON to work!')
+        data = self._post(self.rest_account_policies + "/create", arguments)
+
+        if data.status_code == 200:
+            return data.json()
+        else:
+            return False
+
+    def update_account_policy(self, arguments=None):
+        """Will update an account policy.
+
+        :param arguments: An JSON structure for updating the account policy.
+        :type arguments: JSON
+        :return: False when something went wrong, or JSON data when updated successfully.
+        :Example:
+
+        >>> import syncope
+        >>> syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
+        >>> update_account_policy = '{"id":1001,"description":"My Description 2","type":"ACCOUNT","usedByResources":[],"usedByRoles":[],"specification":{"maxLength":0,"minLength":0,"pattern":null,"wordsNotPermitted":[],"schemasNotPermitted":["firstname"],"prefixesNotPermitted":[],"suffixesNotPermitted":[],"allUpperCase":false,"allLowerCase":false,"propagateSuspension":false,"permittedLoginRetries":0}}'
+        >>> print syn.create_account_policy(update_account_policy)
+        {u'usedByResources': [], u'description': u'My Description', u'specification': { <cut>
+        """
+        if arguments is None:
+            raise ValueError('This update needs an JSON to work!')
+        data = self._post(self.rest_account_policies + "/update", arguments)
+
+        if data.status_code == 200:
+            return data.json()
+        else:
+            return False
+
+    def delete_account_policy(self, id=None):
+        """Will delete an account policy.
+
+        :param id: The account policy id.
+        :type id: Int
+        :return: False when something went wrong, or True when created successfully.
+        :Example:
+
+        >>> import syncope
+        >>> syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
+        >>> print syn.delete_account_policy(1001)
+        True
+        """
+        if id is None:
+            raise ValueError('This delete needs an id to work!')
+        data = self._delete(self.cxf_account_policies + "/" + str(id))
+
+        if data.status_code == 204:
+            return True
+        else:
+            return False
+
+    def get_sync_policies(self):
+        """Will return a list of sync policies.
+
+        :return: False when something went wrong, or json data with all sync policies.
+        :Example:
+
+        >>> import syncope
+        >>> syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
+        >>> print syn.get_account_policies()
+        [{u'usedByResources': [u'resource-csv'], u'description': u'sync policy 2' <cut>
+        """
+        data = self._get(self.cxf_sync_policies)
+
+        if data.status_code == 200:
+            return data.json()
+        else:
+            return False
+
+    def get_sync_policy_by_id(self, id=None):
+        """Will return information with sync policy for id.
+
+        :return: False when something went wrong, or json data with information for sync policy.
+        :Example:
+
+        >>> import syncope
+        >>> syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
+        >>> print syn.get_sync_policy_by_id(9)
+        {u'usedByResources': [u'ws-target-resource-2'], u'description': u'sync policy for java rule', <cut>
+        """
+        if id is None:
+            raise ValueError('This needs an ID to work!')
+        data = self._get(self.cxf_account_policies + "/" + str(id))
+
+        if data.status_code == 200:
+            return data.json()
+        else:
+            return False
+
+    def create_sync_policy(self, arguments=None):
+        """Will create an sync policy.
+
+        :param arguments: An JSON structure for creating the sync policy.
+        :type arguments: JSON
+        :return: False when something went wrong, or JSON data when created successfully.
+        :Example:
+
+        >>> import syncope
+        >>> syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
+        >>> create_sync_policy = '{"description":"My First Sync","type":"SYNC","usedByResources":[],"usedByRoles":[],"specification":{"uAltSearchSchemas":["loginDate"],"userJavaRule":null,"rAltSearchSchemas":[],"roleJavaRule":null,"conflictResolutionAction":"FIRSTMATCH"}}'
+        >>> print syn.create_sync_policy(create_sync_policy)
+        {u'usedByResources': [], u'description': u'My Description', u'specification': { <cut>
+        """
+        if arguments is None:
+            raise ValueError('This create needs an JSON to work!')
+        data = self._post(self.rest_sync_policies + "/create", arguments)
+
+        if data.status_code == 200:
+            return data.json()
+        else:
+            return False
+
+    def update_sync_policy(self, arguments=None):
+        """Will update an sync policy.
+
+        :param arguments: An JSON structure for updating the account policy.
+        :type arguments: JSON
+        :return: False when something went wrong, or JSON data when updated successfully.
+        :Example:
+
+        >>> import syncope
+        >>> syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
+        >>> update_sync_policy = '{"id":1001, "description":"My First Sync","type":"SYNC","usedByResources":[],"usedByRoles":[],"specification":{"uAltSearchSchemas":["loginDate"],"userJavaRule":null,"rAltSearchSchemas":[],"roleJavaRule":null,"conflictResolutionAction":"FIRSTMATCH"}}'
+        >>> print syn.create_sync_policy(update_sync_policy)
+        {u'usedByResources': [], u'description': u'My Description', u'specification': { <cut>
+        """
+        if arguments is None:
+            raise ValueError('This update needs an JSON to work!')
+        data = self._post(self.rest_sync_policies + "/update", arguments)
+
+        if data.status_code == 200:
+            return data.json()
+        else:
+            return False
+
+    def delete_sync_policy(self, id=None):
+        """Will delete an account policy.
+
+        :param id: The account policy id.
+        :type id: Int
+        :return: False when something went wrong, or True when created successfully.
+        :Example:
+
+        >>> import syncope
+        >>> syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
+        >>> print syn.delete_sync_policy(1001)
+        True
+        """
+        if id is None:
+            raise ValueError('This delete needs an id to work!')
+        data = self._delete(self.cxf_sync_policies + "/" + str(id))
+
+        if data.status_code == 204:
+            return True
+        else:
+            return False
+
+    def get_password_policies(self):
+        """Will return a list of password policies.
+
+        :return: False when something went wrong, or json data with all password policies.
+        :Example:
+
+        >>> import syncope
+        >>> syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
+        >>> print syn.get_account_policies()
+        [{u'usedByResources': [u'resource-csv'], u'description': u'password policy 2' <cut>
+        """
+        data = self._get(self.cxf_password_policies)
+
+        if data.status_code == 200:
+            return data.json()
+        else:
+            return False
+
+    def get_password_policy_by_id(self, id=None):
+        """Will return information with password policy for id.
+
+        :return: False when something went wrong, or json data with information for password policy.
+        :Example:
+
+        >>> import syncope
+        >>> syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
+        >>> print syn.get_password_policy_by_id(9)
+        {u'usedByResources': [u'ws-target-resource-2'], u'description': u'password policy for java rule', <cut>
+        """
+        if id is None:
+            raise ValueError('This needs an ID to work!')
+        data = self._get(self.cxf_account_policies + "/" + str(id))
+
+        if data.status_code == 200:
+            return data.json()
+        else:
+            return False
+
+    def create_password_policy(self, arguments=None):
+        """Will create an password policy.
+
+        :param arguments: An JSON structure for creating the password policy.
+        :type arguments: JSON
+        :return: False when something went wrong, or JSON data when created successfully.
+        :Example:
+
+        >>> import syncope
+        >>> syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
+        >>> create_password_policy = '{"description":"My First Sync","type":"SYNC","usedByResources":[],"usedByRoles":[],"specification":{"uAltSearchSchemas":["loginDate"],"userJavaRule":null,"rAltSearchSchemas":[],"roleJavaRule":null,"conflictResolutionAction":"FIRSTMATCH"}}'
+        >>> print syn.create_password_policy(create_password_policy)
+        {u'usedByResources': [], u'description': u'My Description', u'specification': { <cut>
+        """
+        if arguments is None:
+            raise ValueError('This create needs an JSON to work!')
+        data = self._post(self.rest_password_policies + "/create", arguments)
+
+        if data.status_code == 200:
+            return data.json()
+        else:
+            return False
+
+    def update_password_policy(self, arguments=None):
+        """Will update an password policy.
+
+        :param arguments: An JSON structure for updating the account policy.
+        :type arguments: JSON
+        :return: False when something went wrong, or JSON data when updated successfully.
+        :Example:
+
+        >>> import syncope
+        >>> syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
+        >>> update_password_policy = '{"id":1001, "description":"My First Sync","type":"SYNC","usedByResources":[],"usedByRoles":[],"specification":{"uAltSearchSchemas":["loginDate"],"userJavaRule":null,"rAltSearchSchemas":[],"roleJavaRule":null,"conflictResolutionAction":"FIRSTMATCH"}}'
+        >>> print syn.create_password_policy(update_password_policy)
+        {u'usedByResources': [], u'description': u'My Description', u'specification': { <cut>
+        """
+        if arguments is None:
+            raise ValueError('This update needs an JSON to work!')
+        data = self._post(self.rest_password_policies + "/update", arguments)
+
+        if data.status_code == 200:
+            return data.json()
+        else:
+            return False
+
+    def delete_password_policy(self, id=None):
+        """Will delete an account policy.
+
+        :param id: The account policy id.
+        :type id: Int
+        :return: False when something went wrong, or True when created successfully.
+        :Example:
+
+        >>> import syncope
+        >>> syn = syncope.Syncope(syncope_url="http://192.168.10.13:9080", username="admin", password="password")
+        >>> print syn.delete_password_policy(1001)
+        True
+        """
+        if id is None:
+            raise ValueError('This delete needs an id to work!')
+        data = self._delete(self.cxf_password_policies + "/" + str(id))
+
+        if data.status_code == 204:
+            return True
+        else:
+            return False
+
 
     # def get_resources(self):
     #     """Will search an user and will return the data by pages.

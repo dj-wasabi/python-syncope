@@ -1063,6 +1063,470 @@ def test_delete_notification_by_id_raise():
     assert excinfo.value.message == 'This search needs an JSON to work!'
 
 
+def test_get_account_policies():
+    """Will return a list of account policies.
+
+    :return: Should return: 1
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+    account_policies_data = syn.get_account_policies()
+    assert len(account_policies_data) == 1
+
+
+def test_get_account_policies_false():
+    """Will return a list of account policies (Wrong password).
+
+    :return: Should return: False
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="passwrd")
+    assert syn.get_account_policies() == False
+
+
+def test_get_account_policy_by_id():
+    """Will return a list of account policies.
+
+    :return: Should return: 1
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+    account_policies_data = syn.get_account_policy_by_id(5)
+    account_policies_data_type = account_policies_data['type']
+    assert account_policies_data_type == "GLOBAL_ACCOUNT"
+
+
+def test_get_account_policy_by_id_false():
+    """Will return a list of account policies (Wrong password).
+
+    :return: Should return: False
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="passwrd")
+    assert syn.get_account_policy_by_id(5) == False
+
+
+def test_get_account_policy_by_id_raise():
+    """Will update information for notifications with id.
+
+    :return: Should catch the ValueError.
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+    with pytest.raises(ValueError) as excinfo:
+        syn.get_account_policy_by_id()
+    assert excinfo.value.message == 'This needs an ID to work!'
+
+
+def test_create_account_policy():
+    """Will create an account policy.
+
+    :return: Should return: ACCOUNT
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+    create_account_policy = '{"description":"My Description","type":"ACCOUNT","usedByResources":[],"usedByRoles":[],"specification":{"maxLength":0,"minLength":0,"pattern":null,"wordsNotPermitted":[],"schemasNotPermitted":["firstname","email"],"prefixesNotPermitted":[],"suffixesNotPermitted":[],"allUpperCase":false,"allLowerCase":false,"propagateSuspension":false,"permittedLoginRetries":0}}'
+    account_policy_data = syn.create_account_policy(create_account_policy)
+    account_policy_type = account_policy_data['type']
+    assert account_policy_type == "ACCOUNT"
+
+
+def test_create_account_policy_false():
+    """Will create an account policy (Wrong password).
+
+    :return: Should return: False
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="passwrd")
+    assert syn.create_account_policy("json") == False
+
+
+def test_create_account_policy_raise():
+    """Will create an account policy.
+
+    :return: Should catch the ValueError.
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+    with pytest.raises(ValueError) as excinfo:
+        syn.create_account_policy()
+    assert excinfo.value.message == 'This create needs an JSON to work!'
+
+
+def test_update_account_policy():
+    """Will update an account policy.
+
+    :return: Should return: secretary
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+
+    account_policies_list = []
+    for policy in syn.get_account_policies():
+        account_policies_list.append(policy['id'])
+    account_policies_list.reverse()
+    policy_id =  account_policies_list[0]
+    update_policy = '{"id":' + str(policy_id) + ',"description":"My Description 2","type":"ACCOUNT","usedByResources":[],"usedByRoles":[],"specification":{"maxLength":0,"minLength":0,"pattern":null,"wordsNotPermitted":[],"schemasNotPermitted":["firstname"],"prefixesNotPermitted":[],"suffixesNotPermitted":[],"allUpperCase":false,"allLowerCase":false,"propagateSuspension":false,"permittedLoginRetries":0}}'
+    account_policy_data = syn.update_account_policy(update_policy)
+    account_policy_type = account_policy_data['type']
+    assert account_policy_type == "ACCOUNT"
+
+
+def test_update_account_policy_false():
+    """Will update an account policy (Wrong password).
+
+    :return: Should return: False
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="passwrd")
+    assert syn.update_account_policy("json") == False
+
+
+def test_update_account_policy_raise():
+    """Will update an account policy.
+
+    :return: Should catch the ValueError.
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+    with pytest.raises(ValueError) as excinfo:
+        syn.update_account_policy()
+    assert excinfo.value.message == 'This update needs an JSON to work!'
+
+
+def test_delete_account_policy():
+    """Will delete an account policy.
+
+    :return: Should return: True
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+
+    account_policies_list = []
+    for policy in syn.get_account_policies():
+        account_policies_list.append(policy['id'])
+    account_policies_list.reverse()
+    policy_id =  account_policies_list[0]
+    assert syn.delete_account_policy(policy_id) == True
+
+
+def test_delete_account_policy_false():
+    """Will delete an account policy (Wrong password).
+
+    :return: Should return: False
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="passwrd")
+    assert syn.delete_account_policy("json") == False
+
+
+def test_delete_account_policy_raise():
+    """Will delete an account policy.
+
+    :return: Should catch the ValueError.
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+    with pytest.raises(ValueError) as excinfo:
+        syn.delete_account_policy()
+    assert excinfo.value.message == 'This delete needs an id to work!'
+
+
+def test_get_sync_policies():
+    """Will return a list of sync policies.
+
+    :return: Should return: 1
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+    sync_policies_data = syn.get_sync_policies()
+    assert len(sync_policies_data) == 3
+
+
+def test_get_sync_policies_false():
+    """Will return a list of sync policies (Wrong password).
+
+    :return: Should return: False
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="passwrd")
+    assert syn.get_sync_policies() == False
+
+
+def test_get_sync_policy_by_id():
+    """Will return a list of sync policies.
+
+    :return: Should return: 1
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+    sync_policies_data = syn.get_sync_policy_by_id(5)
+    sync_policies_data_type = sync_policies_data['type']
+    assert sync_policies_data_type == "GLOBAL_ACCOUNT"
+
+
+def test_get_sync_policy_by_id_false():
+    """Will return a list of sync policies (Wrong password).
+
+    :return: Should return: False
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="passwrd")
+    assert syn.get_sync_policy_by_id(5) == False
+
+
+def test_get_sync_policy_by_id_raise():
+    """Will update information for notifications with id.
+
+    :return: Should catch the ValueError.
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+    with pytest.raises(ValueError) as excinfo:
+        syn.get_sync_policy_by_id()
+    assert excinfo.value.message == 'This needs an ID to work!'
+
+
+def test_create_sync_policy():
+    """Will create an sync policy.
+
+    :return: Should return: ACCOUNT
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+    create_sync_policy = '{"description":"My First Sync","type":"SYNC","usedByResources":[],"usedByRoles":[],"specification":{"uAltSearchSchemas":["loginDate"],"userJavaRule":null,"rAltSearchSchemas":[],"roleJavaRule":null,"conflictResolutionAction":"FIRSTMATCH"}}'
+    sync_policy_data = syn.create_sync_policy(create_sync_policy)
+    sync_policy_type = sync_policy_data['type']
+    assert sync_policy_type == "SYNC"
+
+
+def test_create_sync_policy_false():
+    """Will create an sync policy (Wrong password).
+
+    :return: Should return: False
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="passwrd")
+    assert syn.create_sync_policy("json") == False
+
+
+def test_create_sync_policy_raise():
+    """Will create an sync policy.
+
+    :return: Should catch the ValueError.
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+    with pytest.raises(ValueError) as excinfo:
+        syn.create_sync_policy()
+    assert excinfo.value.message == 'This create needs an JSON to work!'
+
+
+def test_update_sync_policy():
+    """Will update an sync policy.
+
+    :return: Should return: secretary
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+
+    sync_policies_list = []
+    for policy in syn.get_sync_policies():
+        sync_policies_list.append(policy['id'])
+    sync_policies_list.reverse()
+    policy_id =  sync_policies_list[0]
+    update_policy = '{"id":' + str(policy_id) + ',"description":"My First Sync 2","type":"SYNC","usedByResources":[],"usedByRoles":[],"specification":{"uAltSearchSchemas":["loginDate","firstname"],"userJavaRule":null,"rAltSearchSchemas":[],"roleJavaRule":null,"conflictResolutionAction":"FIRSTMATCH"}}'
+    sync_policy_data = syn.update_sync_policy(update_policy)
+    sync_policy_type = sync_policy_data['type']
+    assert sync_policy_type == "SYNC"
+
+
+def test_update_sync_policy_false():
+    """Will update an sync policy (Wrong password).
+
+    :return: Should return: False
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="passwrd")
+    assert syn.update_sync_policy("json") == False
+
+
+def test_update_sync_policy_raise():
+    """Will update an sync policy.
+
+    :return: Should catch the ValueError.
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+    with pytest.raises(ValueError) as excinfo:
+        syn.update_sync_policy()
+    assert excinfo.value.message == 'This update needs an JSON to work!'
+
+
+def test_delete_sync_policy():
+    """Will delete an sync policy.
+
+    :return: Should return: True
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+    sync_policies_list = []
+    for policy in syn.get_sync_policies():
+        sync_policies_list.append(policy['id'])
+    sync_policies_list.reverse()
+    policy_id = sync_policies_list[0]
+    assert syn.delete_sync_policy(policy_id) == True
+
+
+def test_delete_sync_policy_false():
+    """Will delete an sync policy (Wrong password).
+
+    :return: Should return: False
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="passwrd")
+    assert syn.delete_sync_policy("json") == False
+
+
+def test_delete_sync_policy_raise():
+    """Will delete an sync policy.
+
+    :return: Should catch the ValueError.
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+    with pytest.raises(ValueError) as excinfo:
+        syn.delete_sync_policy()
+    assert excinfo.value.message == 'This delete needs an id to work!'
+
+def test_get_password_policies():
+    """Will return a list of password policies.
+
+    :return: Should return: 2
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+    password_policies_data = syn.get_password_policies()
+    assert len(password_policies_data) == 2
+
+
+def test_get_password_policies_false():
+    """Will return a list of password policies (Wrong password).
+
+    :return: Should return: False
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="passwrd")
+    assert syn.get_password_policies() == False
+
+
+def test_get_password_policy_by_id():
+    """Will return a list of password policies.
+
+    :return: Should return: 1
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+    password_policies_data = syn.get_password_policy_by_id(5)
+    password_policies_data_type = password_policies_data['type']
+    assert password_policies_data_type == "GLOBAL_ACCOUNT"
+
+
+def test_get_password_policy_by_id_false():
+    """Will return a list of password policies (Wrong password).
+
+    :return: Should return: False
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="passwrd")
+    assert syn.get_password_policy_by_id(5) == False
+
+
+def test_get_password_policy_by_id_raise():
+    """Will update information for notifications with id.
+
+    :return: Should catch the ValueError.
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+    with pytest.raises(ValueError) as excinfo:
+        syn.get_password_policy_by_id()
+    assert excinfo.value.message == 'This needs an ID to work!'
+
+
+def test_create_password_policy():
+    """Will create an password policy.
+
+    :return: Should return: ACCOUNT
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+    create_password_policy = '{"description":"My Password Policy","type":"PASSWORD","usedByResources":[],"usedByRoles":[],"specification":{"historyLength":10,"maxLength":0,"minLength":8,"wordsNotPermitted":[],"schemasNotPermitted":[],"nonAlphanumericRequired":true,"alphanumericRequired":true,"digitRequired":true,"lowercaseRequired":false,"uppercaseRequired":false,"mustStartWithDigit":false,"mustntStartWithDigit":false,"mustEndWithDigit":false,"mustntEndWithDigit":false,"mustStartWithNonAlpha":false,"mustStartWithAlpha":false,"mustntStartWithNonAlpha":false,"mustntStartWithAlpha":false,"mustEndWithNonAlpha":false,"mustEndWithAlpha":false,"mustntEndWithNonAlpha":false,"mustntEndWithAlpha":false,"prefixesNotPermitted":[],"suffixesNotPermitted":[]}}'
+    password_policy_data = syn.create_password_policy(create_password_policy)
+    password_policy_type = password_policy_data['type']
+    assert password_policy_type == "PASSWORD"
+
+
+def test_create_password_policy_false():
+    """Will create an password policy (Wrong password).
+
+    :return: Should return: False
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="passwrd")
+    assert syn.create_password_policy("json") == False
+
+
+def test_create_password_policy_raise():
+    """Will create an password policy.
+
+    :return: Should catch the ValueError.
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+    with pytest.raises(ValueError) as excinfo:
+        syn.create_password_policy()
+    assert excinfo.value.message == 'This create needs an JSON to work!'
+
+
+def test_update_password_policy():
+    """Will update an password policy.
+
+    :return: Should return: PASSWORD
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+
+    password_policies_list = []
+    for policy in syn.get_password_policies():
+        password_policies_list.append(policy['id'])
+    password_policies_list.reverse()
+    policy_id = password_policies_list[0]
+    update_policy = '{"id":' + str(policy_id) + ',"description":"My Password Policy 2","type":"PASSWORD","usedByResources":[],"usedByRoles":[],"specification":{"historyLength":10,"maxLength":0,"minLength":8,"wordsNotPermitted":[],"schemasNotPermitted":[],"nonAlphanumericRequired":true,"alphanumericRequired":true,"digitRequired":true,"lowercaseRequired":false,"uppercaseRequired":false,"mustStartWithDigit":false,"mustntStartWithDigit":false,"mustEndWithDigit":false,"mustntEndWithDigit":false,"mustStartWithNonAlpha":false,"mustStartWithAlpha":false,"mustntStartWithNonAlpha":false,"mustntStartWithAlpha":false,"mustEndWithNonAlpha":false,"mustEndWithAlpha":false,"mustntEndWithNonAlpha":false,"mustntEndWithAlpha":false,"prefixesNotPermitted":[],"suffixesNotPermitted":[]}}'
+    password_policy_data = syn.update_password_policy(update_policy)
+    password_policy_type = password_policy_data['type']
+    assert password_policy_type == "PASSWORD"
+
+
+def test_update_password_policy_false():
+    """Will update an password policy (Wrong password).
+
+    :return: Should return: False
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="passwrd")
+    assert syn.update_password_policy("json") == False
+
+
+def test_update_password_policy_raise():
+    """Will update an password policy.
+
+    :return: Should catch the ValueError.
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+    with pytest.raises(ValueError) as excinfo:
+        syn.update_password_policy()
+    assert excinfo.value.message == 'This update needs an JSON to work!'
+
+
+def test_delete_password_policy():
+    """Will delete an password policy.
+
+    :return: Should return: True
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+
+    password_policies_list = []
+    for policy in syn.get_password_policies():
+        password_policies_list.append(policy['id'])
+    password_policies_list.reverse()
+    policy_id =  password_policies_list[0]
+    assert syn.delete_password_policy(policy_id) == True
+
+
+def test_delete_password_policy_false():
+    """Will delete an password policy (Wrong password).
+
+    :return: Should return: False
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="passwrd")
+    assert syn.delete_password_policy("json") == False
+
+
+def test_delete_password_policy_raise():
+    """Will delete an password policy.
+
+    :return: Should catch the ValueError.
+    """
+    syn = syncope.Syncope(syncope_url="http://192.168.1.145:9080", username="admin", password="password")
+    with pytest.raises(ValueError) as excinfo:
+        syn.delete_password_policy()
+    assert excinfo.value.message == 'This delete needs an id to work!'
+
+
+
 # def test_get_resources():
 #     """Will test to get all users.
 #
